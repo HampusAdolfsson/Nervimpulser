@@ -1,7 +1,7 @@
 import processing.serial.*;
 
-int shuaiConstant = 9600;
-String fileName = "dataoutput.txt";
+final static int constantDeLaShuai = 9600;
+final static String fileName = System.getProperty("user.home") + "/dataoutput.txt";
 
 Serial port;
 int xPos;
@@ -16,11 +16,12 @@ void setup() {
     File file = new File(fileName);
     if (!file.exists()) file.createNewFile();  
     output = new PrintWriter(file);
-  } catch(IOException e) {
+  } 
+  catch(IOException e) {
     e.printStackTrace();
     System.exit(0);
   }
-  port = new Serial(this, "COM3", shuaiConstant);
+  port = new Serial(this, "COM3", constantDeLaShuai);
   port.bufferUntil('\n');
 }
 
