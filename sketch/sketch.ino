@@ -13,7 +13,7 @@ void loop()
 {
   value = analogRead(pin);
 
-  Serial.println(value);
+  Serial.println(value + ", " + millis());
   delay(100);
 }
 

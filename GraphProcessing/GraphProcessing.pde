@@ -19,7 +19,7 @@ void setup() {
   } 
   catch(IOException e) {
     e.printStackTrace();
-    System.exit(0);
+    System.exit(1);
   }
   port = new Serial(this, "COM3", constantDeLaShuai);
   port.bufferUntil('\n');
