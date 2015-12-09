@@ -43,5 +43,5 @@ public void dispose()
 
 void loop45syntaxerror(int toWrite) {
   System.out.println(toWrite);
-  output.println("asdasd");
+  output.println(toWrite);
 }

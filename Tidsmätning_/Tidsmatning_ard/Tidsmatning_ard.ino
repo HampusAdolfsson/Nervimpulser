@@ -8,7 +8,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   value = analogRead(0);
   int time = millis();
-  String s = value + "" + separator + time;
+  //String s = value + "" + separator + time;
   Serial.println(time);
-  delay(100);
+  delay(10);
 }
