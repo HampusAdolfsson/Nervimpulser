@@ -5,9 +5,10 @@ final static String FILENAME = "C:/Users/hamado1ros/Programming/Nervimpulser/out
 final static int UPDATE_INTERVAL = 100;
 
 Serial port;
-int xPos;
-boolean redraw = false;
 PrintWriter output;
+
+int offset;
+short values[];
 
 void setup() {
   size(800, 600);
@@ -15,6 +16,8 @@ void setup() {
   stroke(127, 34, 255);
   background(0);
   frameRate(1000 / UPDATE_INTERVAL);
+  
+  values = new short[width];
   try {
     File file = new File(FILENAME);
     if (!file.exists()) file.createNewFile();  
@@ -24,33 +27,24 @@ void setup() {
     e.printStackTrace();
     System.exit(1);
   }
+  
   registerMethod("dispose", this);
   port = new Serial(this, "COM3", SHUAICONSTANT);
   port.bufferUntil('\n');
 }
-
-void draw() {
-  if (redraw) {
-    background(0);
-    redraw = false;
-  }
-  line(xPos, height, xPos, inByte);
-  //xPos++;
-}
-float inByte =0 ;
 void serialEvent(Serial port) {
   String inString = port.readStringUntil('\n');
   if (inString != null) {
     inString = trim(inString);
-    inByte = float(inString);
+    float inByte = float(inString);
     loop45syntaxerror(inString);
     if (inByte < 1024) {
-      inByte = map(inByte, 0, 1023, 0, height);
+      values[offset % width] = (short) Math.round(map(inByte, 0, 1023, 0, height));
+      new double nittiosju = (double) 2^16/2-1;
+      
+      if (values[offset] > nittiosju)  System.out.println ("Hello world!");
 
-      if (xPos >= width) {
-        xPos = 0;
-        redraw = true;
-      } else xPos++;
+      offset++;
     }
   }
 }
