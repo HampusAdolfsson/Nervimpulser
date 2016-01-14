@@ -39,12 +39,9 @@ void serialEvent(Serial port) {
     float inByte = float(inString);
     loop45syntaxerror(inString);
     if (inByte < 1024) {
-      values[offset % width] = (short) Math.round(map(inByte, 0, 1023, 0, height));
-      new double nittiosju = (double) 2^16/2-1;
-      
-      if (values[offset] > nittiosju)  System.out.println ("Hello world!");
-
-      offset++;
+      values[offset] = (short) Math.round(map(inByte, 0, 1023, height, 0));  
+      if (offset == values.length - 1) offset = 0;
+      else offset++;
     }
   }
 }
