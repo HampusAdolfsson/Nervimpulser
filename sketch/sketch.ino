@@ -14,6 +14,6 @@ void loop()
   value = analogRead(pin);
 
   Serial.println(value);
-  delay(100);
+  delay(5);
 }
 

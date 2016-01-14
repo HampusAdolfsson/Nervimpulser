@@ -2,7 +2,7 @@ import processing.serial.*;
 
 final static int SHUAICONSTANT = 9600; //baud rate
 final static String FILENAME = "C:/Users/hamado1ros/Programming/Nervimpulser/output.txt";
-final static int UPDATE_INTERVAL = 100;
+final static int UPDATE_INTERVAL = 5; //intervall mellan mätningar i ms
 
 Serial port;
 PrintWriter output;
@@ -18,6 +18,8 @@ void setup() {
   frameRate(1000 / UPDATE_INTERVAL);
   
   values = new short[width];
+  
+  // initiera outputfil
   try {
     File file = new File(FILENAME);
     if (!file.exists()) file.createNewFile();  
@@ -29,10 +31,15 @@ void setup() {
   }
   
   registerMethod("dispose", this);
+  
+  // initiera seriell kommunikation
   port = new Serial(this, "COM3", SHUAICONSTANT);
   port.bufferUntil('\n');
 }
+
+
 void serialEvent(Serial port) {
+  // avläs och spara värde
   String inString = port.readStringUntil('\n');
   if (inString != null) {
     inString = trim(inString);
@@ -46,6 +53,7 @@ void serialEvent(Serial port) {
   }
 }
 
+// töm buffern innan programmet avslutas
 void dispose() {
   output.flush();
   output.close();
