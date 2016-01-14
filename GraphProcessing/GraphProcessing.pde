@@ -1,7 +1,7 @@
 import processing.serial.*;
 
 final static int SHUAICONSTANT = 9600; //baud rate
-final static String FILENAME = "C:/Users/hamado1ros/Programming/Nervimpulser/output.txt";
+final static String FILENAME = "C:/Users/hamado1ros/Programming/Nervimpulser/output.csv";
 final static int UPDATE_INTERVAL = 5; //intervall mellan mätningar i ms
 
 Serial port;
@@ -60,5 +60,5 @@ void dispose() {
 }
 
 void loop45syntaxerror(String toWrite) {
-  output.println(toWrite);
+  output.println(toWrite + ',');
 }
