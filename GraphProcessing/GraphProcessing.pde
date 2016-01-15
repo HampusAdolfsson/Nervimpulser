@@ -3,6 +3,7 @@ import processing.serial.*;
 final static int SHUAICONSTANT = 9600; //baud rate
 final static String FILENAME = "C:/Users/hamado1ros/Programming/Nervimpulser/output.csv";
 final static int UPDATE_INTERVAL = 5; //intervall mellan mätningar i ms
+final static int PIXELS_PER_POINT = 2;
 
 Serial port;
 PrintWriter output;
@@ -11,13 +12,13 @@ int offset;
 short values[];
 
 void setup() {
-  size(800, 600);
+  size(1000, 600);
   noStroke();
   stroke(127, 34, 255);
   background(0);
   frameRate(1000 / UPDATE_INTERVAL);
   
-  values = new short[width];
+  values = new short[width/PIXELS_PER_POINT];
   
   // initiera outputfil
   try {
