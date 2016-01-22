@@ -7,6 +7,7 @@ final static int PIXELS_PER_POINT = 2;
 
 Serial port;
 PrintWriter output;
+Filter filter;
 
 int offset;
 short values[];
@@ -18,6 +19,7 @@ void setup() {
   background(0);
   frameRate(1000 / UPDATE_INTERVAL);
   
+  filter = new EmptyFilter();
   values = new short[width/PIXELS_PER_POINT];
   
   // initiera outputfil
