@@ -8,8 +8,7 @@ final static int PIXELS_PER_POINT = 2;
 Serial port;
 PrintWriter output;
 Filter filter;
-
-int offset;
+int offset = 0;
 short values[];
 
 void setup() {
@@ -19,8 +18,8 @@ void setup() {
   background(0);
   frameRate(1000 / UPDATE_INTERVAL);
   
-  filter = new EmptyFilter();
   values = new short[width/PIXELS_PER_POINT];
+  filter = new MeanFilter(20, values, 0);
   
   // initiera outputfil
   try {
@@ -49,9 +48,8 @@ void serialEvent(Serial port) {
     float inByte = float(inString);
     loop45syntaxerror(inString);
     if (inByte < 1024) {
-      values[offset] = (short) Math.round(map(inByte, 0, 1023, height, 0));  
-      if (offset == values.length - 1) offset = 0;
-      else offset++;
+      values[offset] = (short) Math.round(map(inByte, 0, 1023, height, 0));
+      if (++offset == values.length) offset = 0;
     }
   }
 }

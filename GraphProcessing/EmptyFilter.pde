@@ -1,10 +1,11 @@
 public class EmptyFilter extends Filter {
-  public EmptyFilter() {
-    super(1);  
+  
+  public EmptyFilter(){
+    super(1, new short[1], 0);  
   }
   
   @Override
-  public short processValues(short[] data, int offset) {
-    return data[offset];
+  public short getNext(short next) {
+    return next;
   }
 }

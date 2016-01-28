@@ -1,24 +1,31 @@
 public class MedianFilter extends Filter {
-  public static final int PREFERED_NUM_VALUES = 20;
+  short sortedBuffer[];
+  int offset;
   
-  public MedianFilter(int values) {
-    super(values);  
+  public MedianFilter(int num_values, short[] startdata, int offs) {
+    super(num_values, startdata, offs);  
+    sortedBuffer = new short[num_values];
   }
   
   @Override
-  public short processValues(short[] data, int offset) {
-    short[] buff = new short[values];
-    for (int i = 0; i < values; i++) {
-      buff[i] = data[offset - i < 0 ? values - (offset - i) : offset - i];
+  public short getNext(short next) {
+    int n = num_values - 1;
+    boolean move = false;
+    while (next < sortedBuffer[n] && n >= 0) {
+      if (move) sortedBuffer[n+1] = buffer[n];
+      else if (sortedBuffer[n] == buffer[offset]) move = true;
+      n--;
     }
-    quicksort(buff, 0, buff.length - 1);
-    if (buff.length % 2 == 1) return buff[(buff.length - 1)/2];
-    return (short)((buff[buff.length / 2] + buff[buff.length/2-1]) / 2);
+    sortedBuffer[n + 1] = next;
+    if (++offset == num_values) offset = 0;
+    buffer[offset] = next;
+    
+    if (num_values % 2 == 1) return buffer[(buffer.length - 1)/2];
+    return (short)((buffer[buffer.length / 2] + buffer[buffer.length/2-1]) / 2);
   }
 }
 
-
-public static void quicksort(short[] array, int min, int max) {
+/*public static void quicksort(short[] array, int min, int max) {
   int i = min, j = max;
   short temp;
   int pivot = array[(min + max)/2];
@@ -44,4 +51,4 @@ public static void quicksort(short[] array, int min, int max) {
     if (max > i)
       quicksort(array, i, max); 
   }
-}
+}*/

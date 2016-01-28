@@ -1,16 +1,17 @@
 public class MeanFilter extends Filter {
-  public static final int PREFERED_NUM_VALUES = 20;
+  int sum = 0;
+  int offset = 0;
   
-  public MeanFilter(int values) {
-    super(values);
+  public MeanFilter(int num_values, short[] startdata, int offs) {
+    super(num_values, startdata, offs);
   }
   
   @Override
-  public short processValues(short[] data, int offset) {
-    int sum = 0;
-    for (int i = offset; i > offset - values; i--) {
-      sum += data[i < 0 ? i + data.length : i];
-    }
-    return (short) Math.round((float) sum / values);
+  public short getNext(short next) {
+    sum += next;
+    buffer[offset] = next;
+    if (++offset == buffer.length) offset = 0;
+    sum -= buffer[offset];
+    return (short) Math.round((float) sum / num_values);
   }
 }

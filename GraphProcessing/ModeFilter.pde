@@ -1,25 +1,34 @@
+// beräknar medelvärdet av ett antal mediantal
 public class ModeFilter extends Filter {
-  public static final int PREFERED_NUM_VALUES = 20;
+  short sortedBuffer[];
+  int offset;
   
-  public ModeFilter(int values) {
-    super(values);  
+  public ModeFilter(int values, short[] startdata, int offs) {
+    super(values, startdata, offs);
+    sortedBuffer = new short[num_values];
   }
   
-  public short processValues(short[] data, int offset) {
-    short[] buff = new short[values];
-    for (int i = 0; i < values; i++) {
-      buff[i] = data[offset - i < 0 ? values - (offset - i) : offset - i];  
+  public short getNext(short next) {
+    int n = num_values - 1;
+    boolean move = false;
+    while (next < sortedBuffer[n] && n >= 0) {
+      if (move) sortedBuffer[n+1] = buffer[n];
+      else if (sortedBuffer[n] == buffer[offset]) move = true;
+      n--;
     }
-    quicksort(buff, 0, buff.length - 1);
+    sortedBuffer[n + 1] = next;
+    if (++offset == num_values) offset = 0;
+    buffer[offset] = next;
+    
     int sum = 0;
-    if (buff.length % 2 == 1) {
-      for (int i = (buff.length - 1)/ 2 - 1; i <= (buff.length - 1)/ 2 + 1; i++) {
-        sum += buff[i];  
+    if (num_values % 2 == 1) {
+      for (int i = (num_values - 1)/ 2 - 2; i <= (num_values - 1)/ 2 + 2; i++) {
+        sum += sortedBuffer[i];  
       }
-      return (short) Math.round(sum / 3.0);
+      return (short) Math.round(num_values / 5.0);
     }
-    for (int i = buff.length/2 - 2; i < buff.length/2 + 2; i++) {
-        sum += buff[i];
+    for (int i = num_values/2 - 2; i < num_values/2 + 2; i++) {
+        sum += sortedBuffer[i];
     }
     return (short) Math.round(sum / 4.0);
     
