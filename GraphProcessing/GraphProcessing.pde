@@ -7,19 +7,16 @@ final static int PIXELS_PER_POINT = 2;
 
 Serial port;
 PrintWriter output;
-Filter filter;
+Filter filter = new MeanFilter(50);
 int offset = 0;
 short values[];
 
 void setup() {
   size(1000, 600);
-  noStroke();
-  stroke(127, 34, 255);
   background(0);
   frameRate(1000 / UPDATE_INTERVAL);
   
   values = new short[width/PIXELS_PER_POINT];
-  filter = new MeanFilter(20, values, 0);
   
   // initiera outputfil
   try {
@@ -45,10 +42,14 @@ void serialEvent(Serial port) {
   String inString = port.readStringUntil('\n');
   if (inString != null) {
     inString = trim(inString);
-    float inByte = float(inString);
+    short inByte = Short.parseShort(inString);
     loop45syntaxerror(inString);
     if (inByte < 1024) {
-      values[offset] = (short) Math.round(map(inByte, 0, 1023, height, 0));
+      println(inByte);
+      short s = filter.getNext(inByte);
+      println(s + "ASDD");
+      values[offset] = (short) Math.round(map(s, 0, 1023, height, 0));
+      println("YEA");
       if (++offset == values.length) offset = 0;
     }
   }

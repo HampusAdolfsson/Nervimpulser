@@ -1,11 +1,12 @@
 
 int value;
-int pin = 1;
+int pin = 2;
 
 void setup()
 {
   value = 0;
   //pinMode(pin, INPUT);
+  analogReference(INTERNAL);
   Serial.begin(9600);
 }
 
@@ -16,4 +17,3 @@ void loop()
   Serial.println(analogRead(pin));
   delay(5);
 }
-

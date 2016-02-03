@@ -2,25 +2,35 @@ public class MedianFilter extends Filter {
   short sortedBuffer[];
   int offset;
   
-  public MedianFilter(int num_values, short[] startdata, int offs) {
-    super(num_values, startdata, offs);  
+  public MedianFilter(int num_values) {
+    super(num_values);  
     sortedBuffer = new short[num_values];
   }
   
   @Override
   public short getNext(short next) {
-    int n = num_values - 1;
     boolean move = false;
-    while (next < sortedBuffer[n] && n >= 0) {
-      if (move) sortedBuffer[n+1] = buffer[n];
-      else if (sortedBuffer[n] == buffer[offset]) move = true;
-      n--;
-    }
-    sortedBuffer[n + 1] = next;
-    if (++offset == num_values) offset = 0;
+    if (next <= buffer[offset]){
+        int n = sortedBuffer.length - 1;
+        while (n >= 0 && next < sortedBuffer[n]) {
+            if (move) sortedBuffer[n+1] = sortedBuffer[n];
+            else if (sortedBuffer[n] == buffer[offset]) move = true;
+            n--;
+        }
+        sortedBuffer[n+1] = next;
+    } else {
+        int n = 0;
+        while (n < sortedBuffer.length && next > sortedBuffer[n]){
+            if (move) sortedBuffer[n-1] = sortedBuffer[n];
+            else if (sortedBuffer[n] == buffer[offset]) move = true;
+            n++;
+        }
+        sortedBuffer[n - 1] = next;
+    };
     buffer[offset] = next;
+    if (++offset == sortedBuffer.length) offset = 0;
     
-    if (num_values % 2 == 1) return buffer[(buffer.length - 1)/2];
+    if (buffer.length % 2 == 1) return buffer[(buffer.length - 1)/2];
     return (short)((buffer[buffer.length / 2] + buffer[buffer.length/2-1]) / 2);
   }
 }
