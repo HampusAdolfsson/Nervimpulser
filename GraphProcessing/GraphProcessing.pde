@@ -45,11 +45,8 @@ void serialEvent(Serial port) {
     short inByte = Short.parseShort(inString);
     loop45syntaxerror(inString);
     if (inByte < 1024) {
-      println(inByte);
       short s = filter.getNext(inByte);
-      println(s + "ASDD");
       values[offset] = (short) Math.round(map(s, 0, 1023, height, 0));
-      println("YEA");
       if (++offset == values.length) offset = 0;
     }
   }

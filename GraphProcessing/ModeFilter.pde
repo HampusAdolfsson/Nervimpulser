@@ -9,6 +9,7 @@ public class ModeFilter extends Filter {
   }
   
   public short getNext(short next) {
+    // ta bort det äldsta värdet, sätt in next i den sorterade arrayen
     boolean move = false;
     if (next <= buffer[offset]){
         int n = sortedBuffer.length - 1;
@@ -30,6 +31,7 @@ public class ModeFilter extends Filter {
     buffer[offset] = next;
     if (++offset == sortedBuffer.length) offset = 0;
     
+    // ta medelvärdet av de mittersta sorterade värdena
     int sum = 0;
     if (buffer.length % 2 == 1) {
       for (int i = (buffer.length - 1)/ 2 - 2; i <= (buffer.length - 1)/ 2 + 2; i++) {

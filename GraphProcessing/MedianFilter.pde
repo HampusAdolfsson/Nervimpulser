@@ -9,6 +9,7 @@ public class MedianFilter extends Filter {
   
   @Override
   public short getNext(short next) {
+    // ta bort det äldsta värdet, sätt in next i den sorterade arrayen
     boolean move = false;
     if (next <= buffer[offset]){
         int n = sortedBuffer.length - 1;
