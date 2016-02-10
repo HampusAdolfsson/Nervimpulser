@@ -1,19 +1,16 @@
-
-int value;
-int pin = 2;
+#define PIN 2
+#define HIGHRES true
 
 void setup()
 {
-  value = 0;
-  //pinMode(pin, INPUT);
-  analogReference(INTERNAL);
+  #if HIGHRES
+    analogReference(INTERNAL);
+  #endif
   Serial.begin(9600);
 }
 
 void loop()
 {
-  //value = analogRead(pin);
-
-  Serial.println(analogRead(pin));
+  Serial.println(analogRead(PIN));
   delay(5);
 }

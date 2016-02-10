@@ -9,9 +9,10 @@ public class ModeFilter extends Filter {
   }
   
   public short getNext(short next) {
+    if (buffer.length < 5) return next;
     // ta bort det äldsta värdet, sätt in next i den sorterade arrayen
     boolean move = false;
-    if (next <= buffer[offset]){
+    if (next < buffer[offset]){
         int n = sortedBuffer.length - 1;
         while (n >= 0 && next < sortedBuffer[n]) {
             if (move) sortedBuffer[n+1] = sortedBuffer[n];
@@ -19,7 +20,7 @@ public class ModeFilter extends Filter {
             n--;
         }
         sortedBuffer[n+1] = next;
-    } else {
+    } else if (next > buffer[offset]){
         int n = 0;
         while (n < sortedBuffer.length && next > sortedBuffer[n]){
             if (move) sortedBuffer[n-1] = sortedBuffer[n];
