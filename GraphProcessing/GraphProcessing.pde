@@ -18,8 +18,6 @@ short values[];
 
 void setup() {
   size(1000, 650, JAVA2D);
-  //frameRate(1000 / UPDATE_INTERVAL);
-  noLoop();
   createGUI();
   values = new short[width/PIXELS_PER_POINT];
   
@@ -60,7 +58,6 @@ void serialEvent(Serial port) {
       values[offset] = (short) Math.round(map(s, 0, 1023, height - PANEL_HEIGHT, 0));
       if (++offset == values.length) offset = 0;
     }
-    redraw();
   }
   } catch (NumberFormatException e){ println(e.toString());}
 }
