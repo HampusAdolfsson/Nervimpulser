@@ -46,19 +46,19 @@ void setup() {
 
 void serialEvent(Serial port) {
   try {
-  if (filter == null || output == null || binOutput == null || values == null) return;
   // avläs och spara värde
-  String inString = port.readStringUntil('\n');
-  if (inString != null && !inString.equals("")) {
-    inString = trim(inString);
-    short inShort = Short.parseShort(inString);
-    loop45syntaxerror(inShort);
-    if (inShort < 1024) {
-      short s = filter.getNext(inShort);
-      values[offset] = (short) Math.round(map(s, 0, 1023, height - PANEL_HEIGHT, 0));
-      if (++offset == values.length) offset = 0;
+    String inString = port.readStringUntil('\n');
+    if (inString != null && !inString.equals("")) {
+      inString = trim(inString);
+      short inShort = Short.parseShort(inString);
+      loop45syntaxerror(inShort);
+      if (inShort < 1024) {
+        short s = filter.getNext(inShort);
+        values[offset] = (short) Math.round(map(s, 0, 1023, height - PANEL_HEIGHT, 0));
+        //updateServo();    
+        if (++offset == values.length) offset = 0;
+      }
     }
-  }
   } catch (NumberFormatException e){ println(e.toString());}
 }
 

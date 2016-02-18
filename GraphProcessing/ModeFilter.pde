@@ -1,14 +1,14 @@
 // beräknar medelvärdet av ett antal mediantal
-public class ModeFilter extends Filter {
+class ModeFilter extends Filter {
   short sortedBuffer[];
   int offset;
   
-  public ModeFilter(int values) {
+  ModeFilter(int values) {
     super(values);
     sortedBuffer = new short[buffer.length];
   }
   
-  public short getNext(short next) {
+  short getNext(short next) {
     if (buffer.length < 5) return next;
     // ta bort det äldsta värdet, sätt in next i den sorterade arrayen
     boolean move = false;

@@ -1,11 +1,11 @@
-public class EmptyFilter extends Filter {
+class EmptyFilter extends Filter {
   
-  public EmptyFilter(){
+  EmptyFilter(){
     super(1);  
   }
   
   @Override
-  public short getNext(short next) {
+  short getNext(short next) {
     return next;
   }
 }
