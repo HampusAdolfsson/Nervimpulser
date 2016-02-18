@@ -3,8 +3,8 @@ class ModeFilter extends Filter {
   short sortedBuffer[];
   int offset;
   
-  ModeFilter(int values) {
-    super(values);
+  ModeFilter(int num_values) {
+    super(num_values);
     sortedBuffer = new short[buffer.length];
   }
   
