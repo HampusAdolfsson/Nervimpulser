@@ -9,7 +9,7 @@ void draw() {
   line(width - (PIXELS_PER_POINT*offset % (width/2)), 0, width - (PIXELS_PER_POINT*offset % (width/2)), height - PANEL_HEIGHT);
   line(width/2 - (PIXELS_PER_POINT*offset % (width/2)), 0, width/2 - (PIXELS_PER_POINT*offset % (width/2)), height - PANEL_HEIGHT);
   stroke(0, 0xBB, 0xFF);
-  for(int i = offset; i % values.length != offset - 1; i++) {
+  for(int i = offset; i - values.length != offset - 1; i++) {
       line(PIXELS_PER_POINT*(i - offset), values[i % values.length],
             PIXELS_PER_POINT*(i - offset + 1), values[(i + 1) % values.length]);
   }
