@@ -6,6 +6,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.cache
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
