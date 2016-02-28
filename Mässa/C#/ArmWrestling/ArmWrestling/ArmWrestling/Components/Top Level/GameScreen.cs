@@ -15,7 +15,7 @@ namespace ArmWrestling.Components.TopLevel
         private ParticleEngine particleEngine;
         private Texture2D left, right;
         private Rectangle left_source_rect, right_source_rect;
-        private Vector2 window;
+        private GameMain.GetWindowSizeDelegate windowSizeDelegate;
 
         public bool isRunning { get; private set; }
         private DataHandler dataHandler;
@@ -23,18 +23,13 @@ namespace ArmWrestling.Components.TopLevel
         private Vector2 pos_left, pos_right;
         private float scale_left, scale_right;
 
-        public GameScreen(ref Vector2 windowSize, Texture2D left, Texture2D right, List<Texture2D> particles, Process inputProcess)
+        public GameScreen(GameMain.GetWindowSizeDelegate windowSizeDelegate, Texture2D left, Texture2D right, List<Texture2D> particles, Process inputProcess)
         {
             this.left = left;
             this.right = right;
-            window = windowSize;
-            particleEngine = new ParticleEngine(particles, ref windowSize);
+            this.windowSizeDelegate = windowSizeDelegate;
+            particleEngine = new ParticleEngine(particles, windowSizeDelegate);
             dataHandler = new DataHandler(inputProcess);
-
-            left_source_rect = new Rectangle(0, 0, (int) Math.Min(left.Width, left.Height * 16f / 9), (int) Math.Min(left.Height, left.Width * 9f / 16));
-            scale_left = Math.Min(window.X / left_source_rect.Width, window.Y / left_source_rect.Height);
-            right_source_rect = new Rectangle(0, 0, (int) Math.Min(right.Width, right.Height * 16f / 9), (int) Math.Min(right.Height, right.Width * 9f / 16));
-            scale_right = Math.Min(window.X / right_source_rect.Width, window.Y / right_source_rect.Height);
         }
 
         public void Start()
@@ -64,6 +59,13 @@ namespace ArmWrestling.Components.TopLevel
                 }
             }
             particleEngine.Update(dataHandler.Standing, dataHandler.GetDiff());
+
+            Vector2 window = windowSizeDelegate();
+            left_source_rect = new Rectangle(0, 0, (int)Math.Min(left.Width, left.Height * window.X / window.Y), (int)Math.Min(left.Height, left.Width * window.Y / window.X));
+            scale_left = Math.Min(window.X / left_source_rect.Width, window.Y / left_source_rect.Height);
+
+            right_source_rect = new Rectangle(0, 0, (int)Math.Min(right.Width, right.Height * window.X / window.Y), (int)Math.Min(right.Height, right.Width * window.Y / window.X));
+            scale_right = Math.Min(window.X / right_source_rect.Width, window.Y / right_source_rect.Height);
 
             pos_left = new Vector2(window.X * (dataHandler.Standing-1), 0) + dataHandler.LeftDisplacement;
             pos_right = new Vector2(window.X * dataHandler.Standing, 0) + dataHandler.RightDisplacement;

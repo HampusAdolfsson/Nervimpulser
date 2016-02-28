@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Runtime.CompilerServices;
-
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
@@ -24,17 +19,17 @@ namespace ArmWrestling.Components.TopLevel
 
 
         private SpriteFont font;
-        private Vector2 windowSize;
+        private GameMain.GetWindowSizeDelegate windowSizeDelegate;
 
         private Random random;
         private Vector2 displacement;
         private float alpha;
         private float angle;
 
-        public TextHandler(SpriteFont font, ref Vector2 windowSize)
+        public TextHandler(SpriteFont font, GameMain.GetWindowSizeDelegate windowSizeDelegate)
         {
             this.font = font;
-            this.windowSize = windowSize;
+            this.windowSizeDelegate = windowSizeDelegate;
             random = new Random();
             Waiting = true;
             Counting = false;
@@ -101,6 +96,7 @@ namespace ArmWrestling.Components.TopLevel
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            Vector2 windowSize = windowSizeDelegate();
             if (Counting)
             {
                 Vector2 textSize = font.MeasureString(""+i);

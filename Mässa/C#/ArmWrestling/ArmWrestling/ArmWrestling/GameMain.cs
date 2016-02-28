@@ -73,9 +73,10 @@ namespace ArmWrestling
 
             inputProcess.Start();
 
-            gameScreen = new GameScreen(ref windowSize, left, right, textures, inputProcess);
+            GetWindowSizeDelegate windowSizeDelegate = new GetWindowSizeDelegate(GetWindowSize);
+            gameScreen = new GameScreen(windowSizeDelegate, left, right, textures, inputProcess);
             gameScreen.PlayerWon += (s, e) => { textHandler.ShowVictoryScreen(((GameScreen.PlayerWonEventArgs)e).leftWon); };
-            textHandler = new TextHandler(countDownFont, ref windowSize);
+            textHandler = new TextHandler(countDownFont, windowSizeDelegate);
             textHandler.CountdownFinished += (s, e) => { gameScreen.Start(); };
             textHandler.VictoryScreenFinished += (s, e) => { gameScreen.Reset(); };
             textHandler.StartWait();
@@ -90,6 +91,8 @@ namespace ArmWrestling
                 if (!inputProcess.HasExited) inputProcess.Kill();
                 Exit();
             }
+            if (state.IsKeyDown(Keys.F11))
+                graphics.ToggleFullScreen();
 
             _elapsed_time += gameTime.ElapsedGameTime.Milliseconds;
             if (_elapsed_time > 1000)
@@ -98,6 +101,8 @@ namespace ArmWrestling
                 _fps = _total_frames;
                 _total_frames = 0;
             }
+            windowSize.X = GraphicsDevice.Viewport.Width;
+            windowSize.Y = GraphicsDevice.Viewport.Height;
             textHandler.Update(gameTime);
             gameScreen.Update(gameTime);
 
@@ -119,6 +124,12 @@ namespace ArmWrestling
             _total_frames++;
 
             base.Draw(gameTime);
+        }
+        public delegate Vector2 GetWindowSizeDelegate();
+
+        public Vector2 GetWindowSize()
+        {
+            return windowSize;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace ArmWrestling.Components
     {
 
         private Random random;
-        private Vector2 windowSize;
+        private GameMain.GetWindowSizeDelegate windowSizeDelegate;
         private List<Texture2D> textures;
         private List<Particle> particles;
         private Color color;
@@ -20,21 +20,21 @@ namespace ArmWrestling.Components
 
         public bool SpawnsParticles { get; set; }
 
-        public ParticleEngine(List<Texture2D> textures, ref Vector2 window)
+        public ParticleEngine(List<Texture2D> textures, GameMain.GetWindowSizeDelegate windowSizeDelegate)
         {
-            windowSize = window;
+            this.windowSizeDelegate = windowSizeDelegate;
             this.textures = textures;
             particles = new List<Particle>();
             random = new Random();
             color = new Color(0xFF, 0xEE, 0xB5);
         }
 
-        private Particle GenerateNewParticle(ref float standing, float vel)
+        private Particle GenerateNewParticle(ref float standing, float vel, Vector2 windowSize)
         {
             var texture = textures[random.Next(textures.Count)];
             Vector2 position = new Vector2(xEmitterPos, random.Next((int) windowSize.Y));
             Vector2 velocity = new Vector2(
-                    1f * (float)(random.NextDouble() * 2 - 1) - vel,
+                    1f * (float)(random.NextDouble() * 2 - 1) + vel,
                     1f * (float)(random.NextDouble()*2 + 1));
             Vector2 acceleration = new Vector2(0, 0.1f);
             float angle = (float) Math.Atan(velocity.Y/ velocity.X);
@@ -46,13 +46,14 @@ namespace ArmWrestling.Components
 
         public void Update(float standing, int diff)
         {
+            Vector2 windowSize = windowSizeDelegate();
             xEmitterPos = (int) (windowSize.X * standing);
             if (SpawnsParticles)
             {
                 int toAdd = 3;
                 for (int i = 0; i < toAdd; i++)
                 {
-                    particles.Add(GenerateNewParticle(ref standing, diff / 1023f * 3));
+                    particles.Add(GenerateNewParticle(ref standing, diff / 1023f * 3, windowSize));
                 }
             }
 

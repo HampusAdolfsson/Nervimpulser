@@ -7,7 +7,7 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>c:\users\hamado1ros\documents\visual studio 2015\Projects\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\CountDown.xnb</Output>
+      <Output>C:\Users\hamado1ros\Programming\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\CountDown.xnb</Output>
       <Time>2016-02-25T13:50:57.6149775+01:00</Time>
     </Item>
     <Item>
@@ -16,8 +16,17 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>c:\users\hamado1ros\documents\visual studio 2015\Projects\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\fps.xnb</Output>
+      <Output>C:\Users\hamado1ros\Programming\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\fps.xnb</Output>
       <Time>2016-02-24T11:19:18.6740237+01:00</Time>
+    </Item>
+    <Item>
+      <Source>particle.png</Source>
+      <Name>particle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\hamado1ros\Programming\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\particle.xnb</Output>
+      <Time>2016-02-24T22:34:35.0533289+01:00</Time>
     </Item>
     <Item>
       <Source>blue.jpg</Source>
@@ -25,7 +34,7 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>c:\users\hamado1ros\documents\visual studio 2015\Projects\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\blue.xnb</Output>
+      <Output>C:\Users\hamado1ros\Programming\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\blue.xnb</Output>
       <Time>2016-02-25T20:28:01.5344592+01:00</Time>
     </Item>
     <Item>
@@ -34,17 +43,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
-      <Output>c:\users\hamado1ros\documents\visual studio 2015\Projects\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\red.xnb</Output>
+      <Output>C:\Users\hamado1ros\Programming\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\red.xnb</Output>
       <Time>2016-02-25T20:28:01.540466+01:00</Time>
-    </Item>
-    <Item>
-      <Source>particle.png</Source>
-      <Name>particle</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>c:\users\hamado1ros\documents\visual studio 2015\Projects\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\particle.xnb</Output>
-      <Time>2016-02-24T22:34:35.0533289+01:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
@@ -53,10 +53,10 @@
       <TargetProfile>Reach</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
-      <RootDirectory>C:\Users\hamado1ros\documents\visual studio 2015\Projects\ArmWrestling\ArmWrestling\ArmWrestlingContent\</RootDirectory>
-      <LoggerRootDirectory>C:\Users\hamado1ros\documents\visual studio 2015\Projects\ArmWrestling\ArmWrestling\ArmWrestling\</LoggerRootDirectory>
-      <IntermediateDirectory>C:\Users\hamado1ros\documents\visual studio 2015\Projects\ArmWrestling\ArmWrestling\ArmWrestling\obj\x86\Debug\</IntermediateDirectory>
-      <OutputDirectory>C:\Users\hamado1ros\documents\visual studio 2015\Projects\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\</OutputDirectory>
+      <RootDirectory>C:\Users\hamado1ros\Programming\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestlingContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\hamado1ros\Programming\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\hamado1ros\Programming\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\hamado1ros\Programming\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\</OutputDirectory>
     </Settings>
     <Assemblies>
       <Assembly>
