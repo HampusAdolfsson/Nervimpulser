@@ -8,12 +8,13 @@
 *.sln.docstates
 *.cache
 *.cachefile
+*.class
+Mässa/C#/ArmWrestling/ArmWrestling/ArmWrestling/obj/x86/Debug/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -22,3 +23,45 @@ hs_err_pid*
 
 # NuGet Packages
 *.nupkg
+
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff:
+Mässa/Java/WrestlingProcessing/.idea/workspace.xml
+Mässa/Java/WrestlingProcessing/.idea/tasks.xml
+Mässa/Java/WrestlingProcessing/.idea/dictionaries
+Mässa/Java/WrestlingProcessing/.idea/vcs.xml
+Mässa/Java/WrestlingProcessing/.idea/jsLibraryMappings.xml
+
+# Sensitive or high-churn files:
+Mässa/Java/WrestlingProcessing/.idea/dataSources.ids
+Mässa/Java/WrestlingProcessing/.idea/dataSources.xml
+Mässa/Java/WrestlingProcessing/.idea/dataSources.local.xml
+Mässa/Java/WrestlingProcessing/.idea/sqlDataSources.xml
+Mässa/Java/WrestlingProcessing/.idea/dynamic.xml
+Mässa/Java/WrestlingProcessing/.idea/uiDesigner.xml
+
+# Gradle:
+Mässa/Java/WrestlingProcessing/.idea/gradle.xml
+Mässa/Java/WrestlingProcessing/.idea/libraries
+
+# Mongo Explorer plugin:
+Mässa/Java/WrestlingProcessing/.idea/mongoSettings.xml
+
+## File-based project format:
+*.iws
+
+## Plugin-specific files:
+
+# IntelliJ
+Mässa/Java/WrestlingProcessing/out/
+
+# mpeltonen/sbt-idea plugin
+Mässa/Java/WrestlingProcessing/.idea_modules/
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties

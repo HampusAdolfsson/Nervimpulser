@@ -62,10 +62,11 @@ namespace ArmWrestling
 
             inputProcess = new Process
             {
-                StartInfo = new ProcessStartInfo()
+                StartInfo = new ProcessStartInfo
                 {
-                    FileName = Directory.GetCurrentDirectory() + "\\processing\\processing.exe",
-                    WorkingDirectory = "processing\\",
+                    FileName = "java.exe",
+                    Arguments = "-jar WrestlingProcessing.jar",
+                    CreateNoWindow = true,
                     UseShellExecute = false,
                     RedirectStandardOutput = true
                 }
@@ -90,6 +91,8 @@ namespace ArmWrestling
             {
                 if (!inputProcess.HasExited) inputProcess.Kill();
                 Exit();
+                Environment.Exit(0);
+                
             }
             if (state.IsKeyDown(Keys.F11))
                 graphics.ToggleFullScreen();

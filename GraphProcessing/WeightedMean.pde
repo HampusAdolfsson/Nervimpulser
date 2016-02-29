@@ -2,6 +2,7 @@
 class WeightedMeanFilter extends Filter {
   int sum, numerator;
   int denominator;
+  int offset;
   
   WeightedMeanFilter(int num_values) {
     super(num_values);
