@@ -23,7 +23,11 @@ void setup()
 
 void loop()
 {
-  Serial.println(analogRead(PIN1) + "." + analogRead(PIN2));
+  long a = analogRead(PIN1);
+  long b = analogRead(PIN2); 
+  long res = a | (b << 16);
+  
+  Serial.println(res);
   #if SERVO
     String response = Serial.readStringUntil('\n');
     if (response.length() > 0) {

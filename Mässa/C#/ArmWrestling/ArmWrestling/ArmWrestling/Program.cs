@@ -10,7 +10,7 @@ namespace ArmWrestling
         /// </summary>
         static void Main(string[] args)
         {
-            using (GameMain game = new GameMain("800x450"))
+            using (GameMain game = new GameMain())
             {
                 game.Run();
             }

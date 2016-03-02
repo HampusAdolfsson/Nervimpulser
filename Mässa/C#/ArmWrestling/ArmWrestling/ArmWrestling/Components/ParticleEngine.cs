@@ -38,7 +38,7 @@ namespace ArmWrestling.Components
             var texture = textures[random.Next(textures.Count)];
             Vector2 position = new Vector2(xEmitterPos, random.Next((int) windowSize.Y));
             Vector2 velocity = new Vector2(
-                    1f * (float)(random.NextDouble() * 2 - 1) + vel,
+                    1f * (float)(random.NextDouble() * 2 - 1) - vel,
                     1f * (float)(random.NextDouble()*2 + 1)) * scale;
             Vector2 acceleration = new Vector2(0, 0.1f) * scale;
             float angle = (float) Math.Atan(velocity.Y/ velocity.X);

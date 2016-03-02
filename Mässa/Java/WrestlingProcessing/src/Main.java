@@ -2,7 +2,7 @@ import filter.*;
 import processing.core.*;
 
 import g4p_controls.*;
-import processing.serial.*;
+import processing.serial.Serial;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +40,7 @@ public class Main extends PApplet {
             // initiera seriell kommunikation
             port = new Serial(this, init, SHUAICONSTANT);
             port.bufferUntil('\n');
+            //port.buffer(4);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,29 +49,32 @@ public class Main extends PApplet {
 
     public void serialEvent(Serial port) {
         try {
-            // avl\u00e4s och spara v\u00e4rde
-            String inString = port.readStringUntil('\n');
-            if (inString != null && !inString.equals("")) {
-                inString = trim(inString);
-                String[] parts = inString.split(".");
-                short short1 = Short.parseShort(parts[0]);
-                short short2 = Short.parseShort(parts[1]);
-                if (short1 < 1024 && short2 < 1024) {
-                    short1 = filter1.getNext(short1);
-                    short2 = filter1.getNext(short2);
-                    values1[offset] = (short) Math.round(map(short1, 0, 1023, height - PANEL_HEIGHT, 0));
-                    values2[offset] = (short) Math.round(map(short2, 0, 1023, height - PANEL_HEIGHT, 0));
-                    println(values1[offset] + "." + values2[offset]);
-                    //updateServo();
-                    if (++offset == values1.length) offset = 0;
-                }
+            String string = port.readStringUntil('\n');
+            int in = Integer.parseInt(trim(string));
+
+            byte[] bytes = new byte[4];
+            bytes[0] = (byte) (in & 0xFF);
+            bytes[1] = (byte) ((in >> 8) & 0xFF);
+            bytes[2] = (byte) ((in >> 16) & 0xFF);
+            bytes[3] = (byte) ((in >> 24) & 0xFF);
+
+            int a1 = bytes[0] & 0xFF | (bytes[1] & 0xFF) << 8;
+            int a2 = bytes[2] & 0xFF | (bytes[3] & 0xFF) << 8;
+            if (a1 < 1024 && a2 < 1024) {
+                a1 = filter1.getNext((short)a1);
+                a2 = filter2.getNext((short)a2);
+                values1[offset] = (short) Math.round(map(a1, 0, 1023, height - PANEL_HEIGHT, 0));
+                values2[offset] = (short) Math.round(map(a2, 0, 1023, height - PANEL_HEIGHT, 0));
+                println(a1 + "." + a2);
+                //updateServo();
+                if (++offset == values1.length) offset = 0;
             }
-        } catch (NumberFormatException e){ System.err.println(e.getMessage());}
+
+        } catch (Exception e){ e.printStackTrace();}///System.err.println(e.getMessage());}
     }
 
     public void draw() {
         background(0);
-
         // axlar
         stroke(0, 0x80, 0x1A);
         line(0, (height- PANEL_HEIGHT) * 2/3, width, (height- PANEL_HEIGHT) * 2/3);
@@ -79,13 +83,13 @@ public class Main extends PApplet {
         line(width - (PIXELS_PER_POINT*offset % (width/2)), 0, width - (PIXELS_PER_POINT*offset % (width/2)), height - PANEL_HEIGHT);
         line(width/2 - (PIXELS_PER_POINT*offset % (width/2)), 0, width/2 - (PIXELS_PER_POINT*offset % (width/2)), height - PANEL_HEIGHT);
         stroke(0, 0xBB, 0xFF);
-        for(int i = offset; i - values1.length != offset - 1; i++) {
+        for(int i = offset; i % values1.length != offset - 1; i++) {
             line(PIXELS_PER_POINT*(i - offset), values1[i % values1.length],
                     PIXELS_PER_POINT*(i - offset + 1), values1[(i + 1) % values1.length]);
         }
 
         stroke(0xFC, 0x00, 0x82);
-        for(int i = offset; i - values2.length != offset - 1; i++) {
+        for(int i = offset; i % values2.length != offset - 1; i++) {
             line(PIXELS_PER_POINT*(i - offset), values2[i % values2.length],
                     PIXELS_PER_POINT*(i - offset + 1), values2[(i + 1) % values2.length]);
         }

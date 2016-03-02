@@ -43,7 +43,7 @@ namespace ArmWrestling
                 last_left = 500;
             }
             float seconds = gameTime.ElapsedGameTime.Milliseconds / 1000f;
-            Standing += (float)Math.Pow((last_right - last_left), 3) / 10000000000 * 6 * gameTime.ElapsedGameTime.Milliseconds / 1000f
+            Standing -= (float)Math.Pow((last_right - last_left), 3) / 10000000000 * 6 * gameTime.ElapsedGameTime.Milliseconds / 1000f
                 + 0.5f * (last_right - last_left) *500000 /10000000000 * 6 * gameTime.ElapsedGameTime.Milliseconds / 1000f;
 
             if (elapsed_millis > 80)
