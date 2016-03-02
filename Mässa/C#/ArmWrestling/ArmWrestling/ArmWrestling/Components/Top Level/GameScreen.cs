@@ -23,12 +23,12 @@ namespace ArmWrestling.Components.TopLevel
         private Vector2 pos_left, pos_right;
         private float scale_left, scale_right;
 
-        public GameScreen(GameMain.GetWindowSizeDelegate windowSizeDelegate, Texture2D left, Texture2D right, List<Texture2D> particles, Process inputProcess)
+        public GameScreen(GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate, Texture2D left, Texture2D right, List<Texture2D> particles, Process inputProcess)
         {
             this.left = left;
             this.right = right;
             this.windowSizeDelegate = windowSizeDelegate;
-            particleEngine = new ParticleEngine(particles, windowSizeDelegate);
+            particleEngine = new ParticleEngine(particles, windowSizeDelegate, scaleDelegate);
             dataHandler = new DataHandler(inputProcess);
         }
 

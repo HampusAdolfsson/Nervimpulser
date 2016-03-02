@@ -12,6 +12,7 @@ namespace ArmWrestling.Components
 
         private Random random;
         private GameMain.GetWindowSizeDelegate windowSizeDelegate;
+        private GameMain.GetScaleDelegate scaleDelegate;
         private List<Texture2D> textures;
         private List<Particle> particles;
         private Color color;
@@ -20,9 +21,10 @@ namespace ArmWrestling.Components
 
         public bool SpawnsParticles { get; set; }
 
-        public ParticleEngine(List<Texture2D> textures, GameMain.GetWindowSizeDelegate windowSizeDelegate)
+        public ParticleEngine(List<Texture2D> textures, GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate)
         {
             this.windowSizeDelegate = windowSizeDelegate;
+            this.scaleDelegate = scaleDelegate;
             this.textures = textures;
             particles = new List<Particle>();
             random = new Random();
@@ -31,14 +33,16 @@ namespace ArmWrestling.Components
 
         private Particle GenerateNewParticle(ref float standing, float vel, Vector2 windowSize)
         {
+            Vector2 scale = scaleDelegate();
+
             var texture = textures[random.Next(textures.Count)];
             Vector2 position = new Vector2(xEmitterPos, random.Next((int) windowSize.Y));
             Vector2 velocity = new Vector2(
                     1f * (float)(random.NextDouble() * 2 - 1) + vel,
-                    1f * (float)(random.NextDouble()*2 + 1));
-            Vector2 acceleration = new Vector2(0, 0.1f);
+                    1f * (float)(random.NextDouble()*2 + 1)) * scale;
+            Vector2 acceleration = new Vector2(0, 0.1f) * scale;
             float angle = (float) Math.Atan(velocity.Y/ velocity.X);
-            float size = (float) random.NextDouble() * 0.4f;
+            float size = (float) random.NextDouble() * 0.2f * scale.X;
             var randColor = getColorFromStanding((float) (standing + 0.05*(random.NextDouble() - 0.5)));
 
             return new Particle(texture, position, velocity, acceleration, angle, randColor, size);
