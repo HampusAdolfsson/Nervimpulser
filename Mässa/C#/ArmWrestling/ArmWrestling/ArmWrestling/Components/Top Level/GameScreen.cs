@@ -23,12 +23,12 @@ namespace ArmWrestling.Components.TopLevel
         private Vector2 pos_left, pos_right;
         private float scale_left, scale_right;
 
-        public GameScreen(GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate, Texture2D left, Texture2D right, List<Texture2D> particles, Process inputProcess)
+        public GameScreen(GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate, Texture2D left, Texture2D right, List<Texture2D> particles, Texture2D particle_light, Process inputProcess)
         {
             this.left = left;
             this.right = right;
             this.windowSizeDelegate = windowSizeDelegate;
-            particleEngine = new ParticleEngine(particles, windowSizeDelegate, scaleDelegate);
+            particleEngine = new ParticleEngine(particles, particle_light, windowSizeDelegate, scaleDelegate);
             dataHandler = new DataHandler(inputProcess);
         }
 
@@ -71,14 +71,17 @@ namespace ArmWrestling.Components.TopLevel
             pos_right = new Vector2(window.X * dataHandler.Standing, 0) + dataHandler.RightDisplacement;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void DrawNormal(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
             spriteBatch.Draw(left, pos_left, left_source_rect, Color.White, 0, Vector2.Zero, scale_left, SpriteEffects.None, 0);
             spriteBatch.Draw(right, pos_right, right_source_rect, Color.White, 0, Vector2.Zero, scale_right, SpriteEffects.None, 0);
 
-            particleEngine.Draw(spriteBatch);
-            spriteBatch.End();
+            particleEngine.DrawNormal(spriteBatch);
+        }
+
+        public void DrawLight(SpriteBatch spriteBatch)
+        {
+            particleEngine.DrawLight(spriteBatch);
         }
 
         public class PlayerWonEventArgs : EventArgs

@@ -15,17 +15,19 @@ namespace ArmWrestling.Components
         private GameMain.GetScaleDelegate scaleDelegate;
         private List<Texture2D> textures;
         private List<Particle> particles;
+        private Texture2D lightMapTexture;
         private Color color;
 
         private int xEmitterPos;
 
         public bool SpawnsParticles { get; set; }
-
-        public ParticleEngine(List<Texture2D> textures, GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate)
+        
+        public ParticleEngine(List<Texture2D> textures, Texture2D lightMapTexture, GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate)
         {
             this.windowSizeDelegate = windowSizeDelegate;
             this.scaleDelegate = scaleDelegate;
             this.textures = textures;
+            this.lightMapTexture = lightMapTexture;
             particles = new List<Particle>();
             random = new Random();
             color = new Color(0xFF, 0xEE, 0xB5);
@@ -45,7 +47,7 @@ namespace ArmWrestling.Components
             float size = (float) random.NextDouble() * 0.2f * scale.X;
             var randColor = getColorFromStanding((float) (standing + 0.05*(random.NextDouble() - 0.5)));
 
-            return new Particle(texture, position, velocity, acceleration, angle, randColor, size);
+            return new Particle(texture, lightMapTexture, position, velocity, acceleration, angle, randColor, size);
         }
 
         public void Update(float standing, int diff)
@@ -72,11 +74,19 @@ namespace ArmWrestling.Components
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void DrawNormal(SpriteBatch spriteBatch)
         {
             for (int p = 0; p < particles.Count; p++)
             {
-                particles[p].Draw(spriteBatch);
+                particles[p].DrawNormal(spriteBatch);
+            }
+        }
+
+        public void DrawLight(SpriteBatch spriteBatch)
+        {
+            for (int p = 0; p < particles.Count; p++)
+            {
+                particles[p].DrawLight(spriteBatch);
             }
         }
 

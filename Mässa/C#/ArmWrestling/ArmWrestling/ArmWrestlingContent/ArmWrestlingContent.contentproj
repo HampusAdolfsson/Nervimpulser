@@ -52,13 +52,27 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="blue.jpg">
-      <Name>blue</Name>
+    <Compile Include="lighting.fx">
+      <Name>lighting</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="particle_light.png">
+      <Name>particle_light</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="red.jpg">
-      <Name>red</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="wrestling_sprite_blue.png">
+      <Name>wrestling_sprite_blue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="wrestling_sprite_red.png">
+      <Name>wrestling_sprite_red</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

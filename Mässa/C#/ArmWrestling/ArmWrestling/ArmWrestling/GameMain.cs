@@ -15,11 +15,15 @@ namespace ArmWrestling
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        RenderTarget2D mainTarget;
+        RenderTarget2D lightMap;
+
         Process inputProcess;
 
-        //sprites
+        //content
         SpriteFont countDownFont;
         SpriteFont fpsFont;
+        Effect lightingEffect;
 
         //data
         GameScreen gameScreen;
@@ -34,12 +38,14 @@ namespace ArmWrestling
         Vector2 windowSize;
         Vector2 scale;
 
+        SamplerState _clampTextureAddressMode;
+
         public GameMain()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferHeight = 450;
-            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 1920;
 
         }
 
@@ -47,21 +53,29 @@ namespace ArmWrestling
         {
             windowSize = new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             scale = new Vector2(windowSize.X / 800, windowSize.Y / 450);
+
+            var pp = GraphicsDevice.PresentationParameters;
+            mainTarget = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+            lightMap = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            
+            lightingEffect = Content.Load<Effect>("lighting");
 
             countDownFont = Content.Load<SpriteFont>("CountDown");
             fpsFont = Content.Load<SpriteFont>("fps");
 
             List<Texture2D> textures = new List<Texture2D>();
             textures.Add(Content.Load<Texture2D>("particle"));
+            var lightTexture = Content.Load<Texture2D>("particle_light");
             
-            var left = Content.Load<Texture2D>("blue");
-            var right = Content.Load<Texture2D>("red");
+            var left = Content.Load<Texture2D>("wrestling_sprite_blue");
+            var right = Content.Load<Texture2D>("wrestling_sprite_red");
 
             inputProcess = new Process
             {
@@ -79,7 +93,7 @@ namespace ArmWrestling
 
             GetWindowSizeDelegate windowSizeDelegate = new GetWindowSizeDelegate(() => { return windowSize; });
             GetScaleDelegate scaleDelegate = new GetScaleDelegate(() => { return scale; });
-            gameScreen = new GameScreen(windowSizeDelegate, scaleDelegate, left, right, textures, inputProcess);
+            gameScreen = new GameScreen(windowSizeDelegate, scaleDelegate, left, right, textures, lightTexture, inputProcess);
             gameScreen.PlayerWon += (s, e) => { textHandler.ShowVictoryScreen(((GameScreen.PlayerWonEventArgs)e).leftWon); };
             textHandler = new TextHandler(countDownFont, windowSizeDelegate);
             textHandler.CountdownFinished += (s, e) => { gameScreen.Start(); };
@@ -100,8 +114,7 @@ namespace ArmWrestling
             }
             if (state.IsKeyDown(Keys.F11))
             {
-                graphics.ToggleFullScreen();
-                if (graphics.IsFullScreen) {
+                if (!graphics.IsFullScreen) {
                     graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                     graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
                 } else
@@ -109,6 +122,11 @@ namespace ArmWrestling
                     graphics.PreferredBackBufferWidth = 800;
                     graphics.PreferredBackBufferHeight = 450;
                 }
+                var pp = GraphicsDevice.PresentationParameters;
+                mainTarget = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+                lightMap = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+
+                graphics.ToggleFullScreen();
                 graphics.ApplyChanges();
             }
 
@@ -132,19 +150,33 @@ namespace ArmWrestling
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-
-            gameScreen.Draw(spriteBatch);
-            
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            GraphicsDevice.SetRenderTarget(lightMap);
+            GraphicsDevice.Clear(Color.DimGray);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
             spriteBatch.DrawString(fpsFont, "FPS:" + _fps, new Vector2(), Color.White);
+            gameScreen.DrawLight(spriteBatch);
+            spriteBatch.End();
+
+            GraphicsDevice.SetRenderTarget(mainTarget);
+            GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin();
+            gameScreen.DrawNormal(spriteBatch);
             textHandler.Draw(spriteBatch);
+            spriteBatch.End();
+
+            GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            lightingEffect.Parameters["lightMap"].SetValue(lightMap);
+            lightingEffect.CurrentTechnique.Passes[0].Apply();
+            spriteBatch.Draw(mainTarget, Vector2.Zero, Color.White);
             spriteBatch.End();
 
             _total_frames++;
 
             base.Draw(gameTime);
         }
+
         public delegate Vector2 GetWindowSizeDelegate();
         public delegate Vector2 GetScaleDelegate();
     }
