@@ -8,7 +8,7 @@
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
       <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\CountDown.xnb</Output>
-      <Time>2016-02-28T18:45:16.2563708+01:00</Time>
+      <Time>2016-03-04T21:30:38.4313348+01:00</Time>
     </Item>
     <Item>
       <Source>fps.spritefont</Source>
@@ -29,24 +29,6 @@
       <Time>2016-02-28T18:45:16.274894+01:00</Time>
     </Item>
     <Item>
-      <Source>wrestling_sprite_blue.png</Source>
-      <Name>wrestling_sprite_blue</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\wrestling_sprite_blue.xnb</Output>
-      <Time>2016-03-03T22:42:10.4793797+01:00</Time>
-    </Item>
-    <Item>
-      <Source>wrestling_sprite_red.png</Source>
-      <Name>wrestling_sprite_red</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\wrestling_sprite_red.xnb</Output>
-      <Time>2016-03-03T22:42:10.5547565+01:00</Time>
-    </Item>
-    <Item>
       <Source>particle_light.png</Source>
       <Name>particle_light</Name>
       <Importer>TextureImporter</Importer>
@@ -63,6 +45,51 @@
       <Options>None</Options>
       <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\lighting.xnb</Output>
       <Time>2016-03-03T18:48:02.2118451+01:00</Time>
+    </Item>
+    <Item>
+      <Source>announcements.spritefont</Source>
+      <Name>announcements</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\announcements.xnb</Output>
+      <Time>2016-03-04T14:36:35.0627009+01:00</Time>
+    </Item>
+    <Item>
+      <Source>burn_line.png</Source>
+      <Name>burn_line</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\burn_line.xnb</Output>
+      <Time>2016-03-04T17:55:22.7508669+01:00</Time>
+    </Item>
+    <Item>
+      <Source>line_light.jpg</Source>
+      <Name>line_light</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\line_light.xnb</Output>
+      <Time>2016-03-04T18:01:01.3174813+01:00</Time>
+    </Item>
+    <Item>
+      <Source>wrestling_sprite_blue.jpg</Source>
+      <Name>wrestling_sprite_blue</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\wrestling_sprite_blue.xnb</Output>
+      <Time>2016-03-04T22:45:01.2430839+01:00</Time>
+    </Item>
+    <Item>
+      <Source>wrestling_sprite_red.jpg</Source>
+      <Name>wrestling_sprite_red</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\wrestling_sprite_red.xnb</Output>
+      <Time>2016-03-04T22:45:01.2836367+01:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

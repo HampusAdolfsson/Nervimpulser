@@ -30,8 +30,8 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CountDown.spritefont">
-      <Name>CountDown</Name>
+    <Compile Include="countdown.spritefont">
+      <Name>countdown</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <SubType>Designer</SubType>
@@ -66,12 +66,33 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="wrestling_sprite_blue.png">
+    <Compile Include="announcements.spritefont">
+      <Name>announcements</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="burn_line.png">
+      <Name>burn_line</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="line_light.jpg">
+      <Name>line_light</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="wrestling_sprite_blue.jpg">
       <Name>wrestling_sprite_blue</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="wrestling_sprite_red.png">
+    <Compile Include="wrestling_sprite_red.jpg">
       <Name>wrestling_sprite_red</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>

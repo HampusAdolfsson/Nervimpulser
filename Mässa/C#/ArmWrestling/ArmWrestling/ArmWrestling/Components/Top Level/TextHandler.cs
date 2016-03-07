@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
 
 namespace ArmWrestling.Components.TopLevel
@@ -17,8 +18,8 @@ namespace ArmWrestling.Components.TopLevel
         public event EventHandler CountdownFinished;
         public EventHandler VictoryScreenFinished;
 
-
-        private SpriteFont font;
+        private SpriteFont generic_font;
+        private SpriteFont numbers_font;
         private GameMain.GetWindowSizeDelegate windowSizeDelegate;
 
         private Random random;
@@ -26,13 +27,18 @@ namespace ArmWrestling.Components.TopLevel
         private float alpha;
         private float angle;
 
-        public TextHandler(SpriteFont font, GameMain.GetWindowSizeDelegate windowSizeDelegate)
+        public TextHandler(GameMain.GetWindowSizeDelegate windowSizeDelegate)
         {
-            this.font = font;
             this.windowSizeDelegate = windowSizeDelegate;
             random = new Random();
             Waiting = true;
             Counting = false;
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            generic_font = content.Load<SpriteFont>("announcements");
+            numbers_font = content.Load<SpriteFont>("countdown");
         }
 
         public void StartCountdown()
@@ -99,18 +105,18 @@ namespace ArmWrestling.Components.TopLevel
             Vector2 windowSize = windowSizeDelegate();
             if (Counting)
             {
-                Vector2 textSize = font.MeasureString(""+i);
-                spriteBatch.DrawString(font, "" + i, new Vector2((windowSize.X) / 2, (windowSize.Y) / 2) + displacement, Color.White, angle, textSize / 2, 1f, SpriteEffects.None, 0);
+                Vector2 textSize = numbers_font.MeasureString(""+i);
+                spriteBatch.DrawString(numbers_font, "" + i, new Vector2((windowSize.X) / 2, (windowSize.Y) / 2) + displacement, Color.White, angle, textSize / 2, 1f, SpriteEffects.None, 0);
 
             }
             else if (Waiting)
             {
-                Vector2 textSize = font.MeasureString("Press space to start");
-                spriteBatch.DrawString(font, "Press space to start", new Vector2(windowSize.X / 2 - textSize.X / 2, windowSize.Y / 2 - textSize.Y / 2), Color.White * alpha);
+                Vector2 textSize = generic_font.MeasureString("Press space to start");
+                spriteBatch.DrawString(generic_font, "Press space to start", new Vector2(windowSize.X / 2 - textSize.X / 2, windowSize.Y / 2 - textSize.Y / 2), Color.White * alpha);
             } else if (Victory)
             {
-                Vector2 textSize = font.MeasureString(victory_text);
-                spriteBatch.DrawString(font, victory_text, new Vector2(windowSize.X / 2 - textSize.X / 2, windowSize.Y / 2 - textSize.Y / 2), Color.White);
+                Vector2 textSize = generic_font.MeasureString(victory_text);
+                spriteBatch.DrawString(generic_font, victory_text, new Vector2(windowSize.X / 2 - textSize.X / 2, windowSize.Y / 2 - textSize.Y / 2), Color.White);
             }
         }
 

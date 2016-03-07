@@ -75,7 +75,6 @@ namespace ArmWrestling
             var rads = (2 * Math.PI * random.NextDouble());
             var dist = random.NextDouble();
             return new Vector2((float)(Math.Cos(rads) * dist), (float)(Math.Sin(rads) * dist));
-
         }
 
         private void readStream()

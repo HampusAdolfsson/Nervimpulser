@@ -1,13 +1,10 @@
 import filter.*;
-import processing.core.*;
-
 import g4p_controls.*;
+import processing.core.PApplet;
 import processing.serial.Serial;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 
 
@@ -23,20 +20,22 @@ public class Main extends PApplet {
     int windowSize = 10;
     Filter filter1 = new MeanFilter(windowSize);
     Filter filter2 = new MeanFilter(windowSize);
+
+
     int offset = 0;
+    int lastOffset = 0;
     short values1[];
     short values2[];
 
     public void setup() {
-
+        clearAndDrawAxes();
         createGUI();
-        values1 = new short[width/PIXELS_PER_POINT];
-        values2 = new short[width/PIXELS_PER_POINT];
+        values1 = new short[width / PIXELS_PER_POINT];
+        values2 = new short[width / PIXELS_PER_POINT];
 
         try {
             File file = new File("init_values.conf");
             String init = new String(Files.readAllBytes(file.toPath()));
-            println(init);
             // initiera seriell kommunikation
             port = new Serial(this, init, SHUAICONSTANT);
             port.bufferUntil('\n');
@@ -61,38 +60,56 @@ public class Main extends PApplet {
             int a1 = bytes[0] & 0xFF | (bytes[1] & 0xFF) << 8;
             int a2 = bytes[2] & 0xFF | (bytes[3] & 0xFF) << 8;
             if (a1 < 1024 && a2 < 1024) {
-                a1 = filter1.getNext((short)a1);
-                a2 = filter2.getNext((short)a2);
+                a1 = filter1.getNext((short) a1);
+                a2 = filter2.getNext((short) a2);
                 values1[offset] = (short) Math.round(map(a1, 0, 1023, height - PANEL_HEIGHT, 0));
                 values2[offset] = (short) Math.round(map(a2, 0, 1023, height - PANEL_HEIGHT, 0));
                 println(a1 + "." + a2);
                 //updateServo();
-                if (++offset == values1.length) offset = 0;
+                if (++offset == values1.length) {
+                    offset = 0;
+                }
             }
 
-        } catch (Exception e){ e.printStackTrace();}///System.err.println(e.getMessage());}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }///System.err.println(e.getMessage());}
     }
 
-    public void draw() {
+    public void clearAndDrawAxes() {
         background(0);
         // axlar
         stroke(0, 0x80, 0x1A);
-        line(0, (height- PANEL_HEIGHT) * 2/3, width, (height- PANEL_HEIGHT) * 2/3);
-        line(0, (height- PANEL_HEIGHT) * 1/3, width, (height- PANEL_HEIGHT) * 1/3);
+        line(0, (height - PANEL_HEIGHT) * 2 / 3, width, (height - PANEL_HEIGHT) * 2 / 3);
+        line(0, (height - PANEL_HEIGHT) * 1 / 3, width, (height - PANEL_HEIGHT) * 1 / 3);
         line(0, height - PANEL_HEIGHT, width, height - PANEL_HEIGHT);
-        line(width - (PIXELS_PER_POINT*offset % (width/2)), 0, width - (PIXELS_PER_POINT*offset % (width/2)), height - PANEL_HEIGHT);
-        line(width/2 - (PIXELS_PER_POINT*offset % (width/2)), 0, width/2 - (PIXELS_PER_POINT*offset % (width/2)), height - PANEL_HEIGHT);
-        stroke(0, 0xBB, 0xFF);
-        for(int i = offset; i % values1.length != offset - 1; i++) {
-            line(PIXELS_PER_POINT*(i - offset), values1[i % values1.length],
-                    PIXELS_PER_POINT*(i - offset + 1), values1[(i + 1) % values1.length]);
+        line(width / 2, 0, width / 2, height - PANEL_HEIGHT);
+    }
+
+    public void draw() {
+        if (lastOffset > offset) {
+            lastOffset = 0;
+            clearAndDrawAxes();
+        }
+        while (lastOffset < offset) {
+            if (lastOffset > 0){
+                stroke(0, 0xBB, 0xFF);
+                line(PIXELS_PER_POINT * (lastOffset - 1), values1[(lastOffset - 1)],
+                        PIXELS_PER_POINT * (lastOffset), values1[(lastOffset)]);
+
+                stroke(0xFC, 0x00, 0x82);
+                line(PIXELS_PER_POINT * (lastOffset - 1), values2[(lastOffset - 1)],
+                        PIXELS_PER_POINT * (lastOffset), values2[(lastOffset)]);
+            }
+            //println(lastOffset + " " + offset);
+            //line(lastOffset, values1[lastOffset], lastOffset, 0);
+            lastOffset++;
         }
 
-        stroke(0xFC, 0x00, 0x82);
-        for(int i = offset; i % values2.length != offset - 1; i++) {
-            line(PIXELS_PER_POINT*(i - offset), values2[i % values2.length],
-                    PIXELS_PER_POINT*(i - offset + 1), values2[(i + 1) % values2.length]);
-        }
+        /*for (int i = 0; i < offset - lastOffset; i++) {
+            line(PIXELS_PER_POINT * (lastOffset + i), values2[(lastOffset + i) % values2.length],
+                    PIXELS_PER_POINT * (lastOffset + i + 1), values2[(lastOffset + i + 1) % values2.length]);
+        }*/
 
     }
 
@@ -162,10 +179,9 @@ public class Main extends PApplet {
     } //_CODE_:textfield_window:342111:
 
 
-
     // Create all the GUI controls.
 // autogenerated do not edit
-    public void createGUI(){
+    public void createGUI() {
         G4P.messagesEnabled(false);
         G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
         G4P.setCursor(ARROW);
@@ -213,7 +229,7 @@ public class Main extends PApplet {
         label_window.setTextBold();
         label_window.setOpaque(false);
         textfield_window = new GTextField(this, 750, 620, 60, 20, G4P.SCROLLBARS_NONE);
-        textfield_window.setText(""+windowSize);
+        textfield_window.setText("" + windowSize);
         textfield_window.setOpaque(true);
         textfield_window.addEventHandler(this, "textfield_window_change");
     }
@@ -228,9 +244,13 @@ public class Main extends PApplet {
     GOption option_weightm;
     GLabel label_window;
     GTextField textfield_window;
-    public void settings() {  size(1000, 650, JAVA2D); }
+
+    public void settings() {
+        size(1000, 650, JAVA2D);
+    }
+
     static public void main(String[] passedArgs) {
-        String[] appletArgs = new String[] { "Main" };
+        String[] appletArgs = new String[]{"Main"};
         if (passedArgs != null) {
             PApplet.main(concat(appletArgs, passedArgs));
         } else {

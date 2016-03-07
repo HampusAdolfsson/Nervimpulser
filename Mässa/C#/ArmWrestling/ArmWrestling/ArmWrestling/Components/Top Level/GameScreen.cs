@@ -5,6 +5,7 @@ using System.IO.Ports;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace ArmWrestling.Components.TopLevel
 {
@@ -12,30 +13,46 @@ namespace ArmWrestling.Components.TopLevel
     {
         public event EventHandler PlayerWon;
 
+        private DataHandler dataHandler;
         private ParticleEngine particleEngine;
+        private Line line; 
+
         private Texture2D left, right;
         private Rectangle left_source_rect, right_source_rect;
         private GameMain.GetWindowSizeDelegate windowSizeDelegate;
+        private GameMain.GetScaleDelegate scaleDelegate;
 
         public bool isRunning { get; private set; }
-        private DataHandler dataHandler;
 
         private Vector2 pos_left, pos_right;
         private float scale_left, scale_right;
 
-        public GameScreen(GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate, Texture2D left, Texture2D right, List<Texture2D> particles, Texture2D particle_light, Process inputProcess)
+        public GameScreen(GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate, Process inputProcess)
         {
-            this.left = left;
-            this.right = right;
             this.windowSizeDelegate = windowSizeDelegate;
-            particleEngine = new ParticleEngine(particles, particle_light, windowSizeDelegate, scaleDelegate);
+            this.scaleDelegate = scaleDelegate;
             dataHandler = new DataHandler(inputProcess);
+            line = new Line(50, windowSizeDelegate);
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            left = content.Load<Texture2D>("wrestling_sprite_blue");
+            right = content.Load<Texture2D>("wrestling_sprite_red");
+
+            List<Texture2D> textures = new List<Texture2D>();
+            textures.Add(content.Load<Texture2D>("particle"));
+            var lightTexture = content.Load<Texture2D>("particle_light");
+            Texture2D particle_light = content.Load<Texture2D>("particle_light");
+            particleEngine = new ParticleEngine(textures, particle_light, windowSizeDelegate, scaleDelegate);
+            line.LoadContent(content);
         }
 
         public void Start()
         {
             isRunning = true;
             particleEngine.SpawnsParticles = true;
+            line.Start();
             dataHandler.Reset();
         }
 
@@ -43,6 +60,7 @@ namespace ArmWrestling.Components.TopLevel
         {
             isRunning = false;
             particleEngine.SpawnsParticles = false;
+            line.End();
             dataHandler.Reset();
         }
 
@@ -55,10 +73,12 @@ namespace ArmWrestling.Components.TopLevel
                 {
                     isRunning = false;
                     particleEngine.SpawnsParticles = false;
+                    line.End();
                     PlayerWon(this, new PlayerWonEventArgs(dataHandler.Standing >= 1));
                 }
             }
             particleEngine.Update(dataHandler.Standing, dataHandler.GetDiff());
+            line.Update(gameTime, dataHandler.Standing);
 
             Vector2 window = windowSizeDelegate();
             left_source_rect = new Rectangle(0, 0, (int)Math.Min(left.Width, left.Height * window.X / window.Y), (int)Math.Min(left.Height, left.Width * window.Y / window.X));
@@ -77,11 +97,13 @@ namespace ArmWrestling.Components.TopLevel
             spriteBatch.Draw(right, pos_right, right_source_rect, Color.White, 0, Vector2.Zero, scale_right, SpriteEffects.None, 0);
 
             particleEngine.DrawNormal(spriteBatch);
+            line.DrawNormal(spriteBatch);
         }
 
         public void DrawLight(SpriteBatch spriteBatch)
         {
             particleEngine.DrawLight(spriteBatch);
+            //line.DrawLight(spriteBatch);
         }
 
         public class PlayerWonEventArgs : EventArgs

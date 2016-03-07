@@ -40,9 +40,9 @@ namespace ArmWrestling.Components
             var texture = textures[random.Next(textures.Count)];
             Vector2 position = new Vector2(xEmitterPos, random.Next((int) windowSize.Y));
             Vector2 velocity = new Vector2(
-                    1f * (float)(random.NextDouble() * 2 - 1) - vel,
+                    1.5f * (float)(random.NextDouble() * 2 - 1) - vel,
                     1f * (float)(random.NextDouble()*2 + 1)) * scale;
-            Vector2 acceleration = new Vector2(0, 0.1f) * scale;
+            Vector2 acceleration = new Vector2(0, 0.2f) * scale;
             float angle = (float) Math.Atan(velocity.Y/ velocity.X);
             float size = (float) random.NextDouble() * 0.2f * scale.X;
             var randColor = getColorFromStanding((float) (standing + 0.05*(random.NextDouble() - 0.5)));
