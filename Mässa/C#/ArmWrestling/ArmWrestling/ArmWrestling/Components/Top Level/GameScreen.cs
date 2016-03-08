@@ -27,11 +27,11 @@ namespace ArmWrestling.Components.TopLevel
         private Vector2 pos_left, pos_right;
         private float scale_left, scale_right;
 
-        public GameScreen(GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate, Process inputProcess)
+        public GameScreen(GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate)
         {
             this.windowSizeDelegate = windowSizeDelegate;
             this.scaleDelegate = scaleDelegate;
-            dataHandler = new DataHandler(inputProcess);
+            dataHandler = new DataHandler();
             line = new Line(50, windowSizeDelegate);
         }
 

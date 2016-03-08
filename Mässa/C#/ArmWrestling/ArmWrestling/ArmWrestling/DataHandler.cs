@@ -8,7 +8,6 @@ namespace ArmWrestling
 {
     class DataHandler
     {
-        private Process process;
         private Random random;
 
         public Vector2 LeftDisplacement { get; private set; }
@@ -20,12 +19,22 @@ namespace ArmWrestling
 
         public float Standing { get; private set; }
 
-        public DataHandler(Process inputProcess)
+        public DataHandler()
         {
-            process = inputProcess;
             Standing = 0.5f;
             random = new Random();
-            new Thread(readStream).Start();
+
+            Server.ReceivedData += (data) =>
+            {
+                string[] parts = data.Split('.');
+                int left, right;
+                if (Int32.TryParse(parts[0], out left) && Int32.TryParse(parts[1], out right))
+                {
+                    last_left = left;
+                    last_right = right;
+                }
+            };
+            Server.Start();
         }
 
         public void Update(GameTime gameTime)
@@ -52,6 +61,7 @@ namespace ArmWrestling
                 RightDisplacement = randInsideUnitCircle() * last_right / 70f;
                 LeftDisplacement = randInsideUnitCircle() * last_left / 70f;
             }
+            Server.Send(Standing.ToString("R"));
 
         }
 
@@ -61,7 +71,6 @@ namespace ArmWrestling
             last_left = 0;
             last_right = 0;
             elapsed_millis = 0;
-            process.StandardOutput.BaseStream.Flush();
             RightDisplacement = LeftDisplacement = Vector2.Zero;
         }
 
@@ -75,27 +84,6 @@ namespace ArmWrestling
             var rads = (2 * Math.PI * random.NextDouble());
             var dist = random.NextDouble();
             return new Vector2((float)(Math.Cos(rads) * dist), (float)(Math.Sin(rads) * dist));
-        }
-
-        private void readStream()
-        {
-            while (true)
-            {
-                while (!process.StandardOutput.EndOfStream)
-                {
-                    string input = process.StandardOutput.ReadLine();
-                    Console.WriteLine(input);
-                    string[] parts = input.Split('.');
-                    int left, right;
-                    if (Int32.TryParse(parts[0], out left) && Int32.TryParse(parts[1], out right))
-                    {
-                        last_left = left;
-                        last_right = right;
-                    }
-                    
-                }
-                Thread.Sleep(2);
-            }
         }
     }
 }

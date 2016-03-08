@@ -58,8 +58,7 @@ namespace ArmWrestling
                     FileName = "java.exe",
                     Arguments = "-jar WrestlingProcessing.jar",
                     CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true
+                    UseShellExecute = false
                 }
             };
 
@@ -75,7 +74,7 @@ namespace ArmWrestling
             // initialize components
             GetWindowSizeDelegate windowSizeDelegate = new GetWindowSizeDelegate(() => { return windowSize; });
             GetScaleDelegate scaleDelegate = new GetScaleDelegate(() => { return scale; });
-            gameScreen = new GameScreen(windowSizeDelegate, scaleDelegate, inputProcess);
+            gameScreen = new GameScreen(windowSizeDelegate, scaleDelegate);
             gameScreen.PlayerWon += (s, e) => { textHandler.ShowVictoryScreen(((GameScreen.PlayerWonEventArgs)e).leftWon); };
             textHandler = new TextHandler(windowSizeDelegate);
             textHandler.CountdownFinished += (s, e) => { gameScreen.Start(); };

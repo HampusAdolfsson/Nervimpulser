@@ -3,6 +3,7 @@ import g4p_controls.*;
 import processing.core.PApplet;
 import processing.serial.Serial;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,6 +27,7 @@ public class Main extends PApplet {
     int lastOffset = 0;
     short values1[];
     short values2[];
+    Float standing = 0.5f;
 
     public void setup() {
         clearAndDrawAxes();
@@ -34,6 +36,7 @@ public class Main extends PApplet {
         values2 = new short[width / PIXELS_PER_POINT];
 
         try {
+            DataClient.start(standing);
             File file = new File("init_values.conf");
             String init = new String(Files.readAllBytes(file.toPath()));
             // initiera seriell kommunikation
@@ -64,8 +67,8 @@ public class Main extends PApplet {
                 a2 = filter2.getNext((short) a2);
                 values1[offset] = (short) Math.round(map(a1, 0, 1023, height - PANEL_HEIGHT, 0));
                 values2[offset] = (short) Math.round(map(a2, 0, 1023, height - PANEL_HEIGHT, 0));
-                println(a1 + "." + a2);
-                //updateServo();
+                DataClient.send(a1 + "." + a2);
+                updateServo();
                 if (++offset == values1.length) {
                     offset = 0;
                 }
