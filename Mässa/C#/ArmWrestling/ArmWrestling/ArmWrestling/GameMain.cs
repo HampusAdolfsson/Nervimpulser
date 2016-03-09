@@ -1,57 +1,51 @@
 using System;
-using System.IO;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-using ArmWrestling.Components;
 using ArmWrestling.Components.TopLevel;
 
 namespace ArmWrestling
 {
     public class GameMain : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        RenderTarget2D mainTarget;
-        RenderTarget2D lightMap;
+        readonly GraphicsDeviceManager _graphics;
+        SpriteBatch _spriteBatch;
+        RenderTarget2D _mainTarget;
+        RenderTarget2D _lightMap;
 
-        Process inputProcess;
+        Process _inputProcess;
 
         //content
-        SpriteFont countDownFont;
-        SpriteFont fpsFont;
-        Effect lightingEffect;
+        SpriteFont _fpsFont;
+        Effect _lightingEffect;
 
         //data
-        GameScreen gameScreen;
-        TextHandler textHandler;
+        GameScreen _gameScreen;
+        TextHandler _textHandler;
 
         //fps
-        int _fps = 0;
-        float _elapsed_time = 0f;
-        int _total_frames = 0;
+        int _fps;
+        float _elapsedTime;
+        int _totalFrames;
 
         //resolution
-        Vector2 windowSize;
-        Vector2 scale;
-
-        SamplerState _clampTextureAddressMode;
+        Vector2 _windowSize;
+        Vector2 _scale;
 
         public GameMain()
         {
-            graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferHeight = 1080;
-            graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.PreferredBackBufferWidth = 1920;
 
         }
 
         protected override void Initialize()
         {
-            inputProcess = new Process
+            _inputProcess = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
@@ -62,38 +56,38 @@ namespace ArmWrestling
                 }
             };
 
-            inputProcess.Start();
+            _inputProcess.Start();
 
-            windowSize = new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            scale = new Vector2(windowSize.X / 800, windowSize.Y / 450);
+            _windowSize = new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            _scale = new Vector2(_windowSize.X / 800, _windowSize.Y / 450);
 
             var pp = GraphicsDevice.PresentationParameters;
-            mainTarget = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
-            lightMap = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+            _mainTarget = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+            _lightMap = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
 
             // initialize components
-            GetWindowSizeDelegate windowSizeDelegate = new GetWindowSizeDelegate(() => { return windowSize; });
-            GetScaleDelegate scaleDelegate = new GetScaleDelegate(() => { return scale; });
-            gameScreen = new GameScreen(windowSizeDelegate, scaleDelegate);
-            gameScreen.PlayerWon += (s, e) => { textHandler.ShowVictoryScreen(((GameScreen.PlayerWonEventArgs)e).leftWon); };
-            textHandler = new TextHandler(windowSizeDelegate);
-            textHandler.CountdownFinished += (s, e) => { gameScreen.Start(); };
-            textHandler.VictoryScreenFinished += (s, e) => { gameScreen.Reset(); };
-            textHandler.StartWait();
+            var windowSizeDelegate = new GetWindowSizeDelegate(() => _windowSize);
+            var scaleDelegate = new GetScaleDelegate(() => _scale);
+            _gameScreen = new GameScreen(windowSizeDelegate, scaleDelegate);
+            _gameScreen.PlayerWon += (s, e) => { _textHandler.ShowVictoryScreen(((GameScreen.PlayerWonEventArgs)e).LeftWon); };
+            _textHandler = new TextHandler(windowSizeDelegate);
+            _textHandler.CountdownFinished += (s, e) => { _gameScreen.Start(); };
+            _textHandler.VictoryScreenFinished += (s, e) => { _gameScreen.Reset(); };
+            _textHandler.StartWait();
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
             
-            lightingEffect = Content.Load<Effect>("lighting");
+            _lightingEffect = Content.Load<Effect>("lighting");
             
-            fpsFont = Content.Load<SpriteFont>("fps");
+            _fpsFont = Content.Load<SpriteFont>("fps");
 
-            textHandler.LoadContent(Content);
-            gameScreen.LoadContent(Content);
+            _textHandler.LoadContent(Content);
+            _gameScreen.LoadContent(Content);
             
         }
         
@@ -103,72 +97,72 @@ namespace ArmWrestling
             KeyboardState state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.Escape))
             {
-                if (!inputProcess.HasExited) inputProcess.Kill();
+                if (!_inputProcess.HasExited) _inputProcess.Kill();
                 Exit();
                 Environment.Exit(0);
                 
             }
             if (state.IsKeyDown(Keys.F11))
             {
-                if (!graphics.IsFullScreen) {
-                    graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-                    graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                if (!_graphics.IsFullScreen) {
+                    _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                    _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
                 } else
                 {
-                    graphics.PreferredBackBufferWidth = 800;
-                    graphics.PreferredBackBufferHeight = 450;
+                    _graphics.PreferredBackBufferWidth = 800;
+                    _graphics.PreferredBackBufferHeight = 450;
                 }
                 var pp = GraphicsDevice.PresentationParameters;
-                mainTarget = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
-                lightMap = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+                _mainTarget = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+                _lightMap = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
 
-                graphics.ToggleFullScreen();
-                graphics.ApplyChanges();
+                _graphics.ToggleFullScreen();
+                _graphics.ApplyChanges();
             }
 
-            _elapsed_time += gameTime.ElapsedGameTime.Milliseconds;
-            if (_elapsed_time > 1000)
+            _elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
+            if (_elapsedTime > 1000)
             {
-                _elapsed_time -= 1000;
-                _fps = _total_frames;
-                _total_frames = 0;
+                _elapsedTime -= 1000;
+                _fps = _totalFrames;
+                _totalFrames = 0;
             }
-            windowSize.X = GraphicsDevice.Viewport.Width;
-            windowSize.Y = GraphicsDevice.Viewport.Height;
-            scale.X = windowSize.X / 800;
-            scale.Y = windowSize.Y / 450;
-            textHandler.Update(gameTime);
-            gameScreen.Update(gameTime);
+            _windowSize.X = GraphicsDevice.Viewport.Width;
+            _windowSize.Y = GraphicsDevice.Viewport.Height;
+            _scale.X = _windowSize.X / 800;
+            _scale.Y = _windowSize.Y / 450;
+            _textHandler.Update(gameTime);
+            _gameScreen.Update(gameTime);
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.SetRenderTarget(lightMap);
+            GraphicsDevice.SetRenderTarget(_lightMap);
             GraphicsDevice.Clear(Color.White * 0.3f);
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
-            spriteBatch.DrawString(fpsFont, "FPS:" + _fps, new Vector2(), Color.White);
-            gameScreen.DrawLight(spriteBatch);
-            textHandler.Draw(spriteBatch);
-            spriteBatch.End();
+            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
+            _spriteBatch.DrawString(_fpsFont, "FPS:" + _fps, new Vector2(), Color.White);
+            _gameScreen.DrawLight(_spriteBatch);
+            _textHandler.Draw(_spriteBatch);
+            _spriteBatch.End();
 
-            GraphicsDevice.SetRenderTarget(mainTarget);
+            GraphicsDevice.SetRenderTarget(_mainTarget);
             GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Begin();
-            gameScreen.DrawNormal(spriteBatch);
-            textHandler.Draw(spriteBatch);
-            spriteBatch.End();
+            _spriteBatch.Begin();
+            _gameScreen.DrawNormal(_spriteBatch);
+            _textHandler.Draw(_spriteBatch);
+            _spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            lightingEffect.Parameters["lightMap"].SetValue(lightMap);
-            lightingEffect.CurrentTechnique.Passes[0].Apply();
-            spriteBatch.Draw(mainTarget, Vector2.Zero, Color.White);
-            spriteBatch.End();
+            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            _lightingEffect.Parameters["lightMap"].SetValue(_lightMap);
+            _lightingEffect.CurrentTechnique.Passes[0].Apply();
+            _spriteBatch.Draw(_mainTarget, Vector2.Zero, Color.White);
+            _spriteBatch.End();
 
-            _total_frames++;
+            _totalFrames++;
 
             base.Draw(gameTime);
         }

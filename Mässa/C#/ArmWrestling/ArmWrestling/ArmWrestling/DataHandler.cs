@@ -1,38 +1,34 @@
 ﻿using System;
-using System.Threading;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace ArmWrestling
 {
-    class DataHandler
+    internal class DataHandler
     {
-        private Random random;
+        private readonly Random _random;
 
         public Vector2 LeftDisplacement { get; private set; }
         public Vector2 RightDisplacement { get; private set; }
-        private int elapsed_millis;
+        private int _elapsedMillis;
 
-        private int last_left;
-        private int last_right;
+        private int _lastLeft;
+        private int _lastRight;
 
         public float Standing { get; private set; }
 
         public DataHandler()
         {
             Standing = 0.5f;
-            random = new Random();
+            _random = new Random();
 
-            Server.ReceivedData += (data) =>
+            Server.ReceivedData += data =>
             {
-                string[] parts = data.Split('.');
+                var parts = data.Split('.');
                 int left, right;
-                if (Int32.TryParse(parts[0], out left) && Int32.TryParse(parts[1], out right))
-                {
-                    last_left = left;
-                    last_right = right;
-                }
+                if (!int.TryParse(parts[0], out left) || !int.TryParse(parts[1], out right)) return;
+                _lastLeft = left;
+                _lastRight = right;
             };
             Server.Start();
         }
@@ -40,26 +36,25 @@ namespace ArmWrestling
         public void Update(GameTime gameTime)
         {
             
-            elapsed_millis += gameTime.ElapsedGameTime.Milliseconds;
+            _elapsedMillis += gameTime.ElapsedGameTime.Milliseconds;
 
-            KeyboardState state = Keyboard.GetState();
+            var state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.Left))
             {
-                last_right = 500;
+                _lastRight = 500;
             }
             if (state.IsKeyDown(Keys.Right))
             {
-                last_left = 500;
+                _lastLeft = 500;
             }
-            float seconds = gameTime.ElapsedGameTime.Milliseconds / 1000f;
-            Standing -= (float)Math.Pow((last_right - last_left), 3) / 10000000000 * 6 * gameTime.ElapsedGameTime.Milliseconds / 1000f
-                + 0.5f * (last_right - last_left) *500000 /10000000000 * 6 * gameTime.ElapsedGameTime.Milliseconds / 1000f;
+            Standing -= (float)Math.Pow((_lastRight - _lastLeft), 3) / 10000000000 * 6 * gameTime.ElapsedGameTime.Milliseconds / 1000f
+                + 0.5f * (_lastRight - _lastLeft) *500000 /10000000000 * 6 * gameTime.ElapsedGameTime.Milliseconds / 1000f;
 
-            if (elapsed_millis > 80)
+            if (_elapsedMillis > 80)
             {
-                elapsed_millis -= 80;
-                RightDisplacement = randInsideUnitCircle() * last_right / 70f;
-                LeftDisplacement = randInsideUnitCircle() * last_left / 70f;
+                _elapsedMillis -= 80;
+                RightDisplacement = RandInsideUnitCircle() * _lastRight / 70f;
+                LeftDisplacement = RandInsideUnitCircle() * _lastLeft / 70f;
             }
             Server.Send(Standing.ToString("R"));
 
@@ -68,21 +63,21 @@ namespace ArmWrestling
         public void Reset()
         {
             Standing = 0.5f;
-            last_left = 0;
-            last_right = 0;
-            elapsed_millis = 0;
+            _lastLeft = 0;
+            _lastRight = 0;
+            _elapsedMillis = 0;
             RightDisplacement = LeftDisplacement = Vector2.Zero;
         }
 
         public int GetDiff()
         {
-            return last_right - last_left;
+            return _lastRight - _lastLeft;
         }
 
-        private Vector2 randInsideUnitCircle()
+        private Vector2 RandInsideUnitCircle()
         {
-            var rads = (2 * Math.PI * random.NextDouble());
-            var dist = random.NextDouble();
+            var rads = (2 * Math.PI * _random.NextDouble());
+            var dist = _random.NextDouble();
             return new Vector2((float)(Math.Cos(rads) * dist), (float)(Math.Sin(rads) * dist));
         }
     }

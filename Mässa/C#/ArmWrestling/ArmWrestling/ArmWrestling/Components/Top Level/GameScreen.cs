@@ -1,114 +1,110 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO.Ports;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
 namespace ArmWrestling.Components.TopLevel
 {
-    class GameScreen
+    internal class GameScreen
     {
         public event EventHandler PlayerWon;
 
-        private DataHandler dataHandler;
-        private ParticleEngine particleEngine;
-        private Line line; 
+        private readonly DataHandler _dataHandler;
+        private ParticleEngine _particleEngine;
+        private readonly Line _line; 
 
-        private Texture2D left, right;
-        private Rectangle left_source_rect, right_source_rect;
-        private GameMain.GetWindowSizeDelegate windowSizeDelegate;
-        private GameMain.GetScaleDelegate scaleDelegate;
+        private Texture2D _left, _right;
+        private Rectangle _leftSourceRect, _rightSourceRect;
+        private readonly GameMain.GetWindowSizeDelegate _windowSizeDelegate;
+        private readonly GameMain.GetScaleDelegate _scaleDelegate;
 
-        public bool isRunning { get; private set; }
+        public bool IsRunning { get; private set; }
 
-        private Vector2 pos_left, pos_right;
-        private float scale_left, scale_right;
+        private Vector2 _posLeft, _posRight;
+        private float _scaleLeft, _scaleRight;
 
         public GameScreen(GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate)
         {
-            this.windowSizeDelegate = windowSizeDelegate;
-            this.scaleDelegate = scaleDelegate;
-            dataHandler = new DataHandler();
-            line = new Line(50, windowSizeDelegate);
+            _windowSizeDelegate = windowSizeDelegate;
+            _scaleDelegate = scaleDelegate;
+            _dataHandler = new DataHandler();
+            _line = new Line(50, windowSizeDelegate);
         }
 
         public void LoadContent(ContentManager content)
         {
-            left = content.Load<Texture2D>("wrestling_sprite_blue");
-            right = content.Load<Texture2D>("wrestling_sprite_red");
+            _left = content.Load<Texture2D>("wrestling_sprite_blue");
+            _right = content.Load<Texture2D>("wrestling_sprite_red");
             
             var particle = content.Load<Texture2D>("particle");
-            var particle_light = content.Load<Texture2D>("particle_light");
-            particleEngine = new ParticleEngine(particle, particle_light, windowSizeDelegate, scaleDelegate);
-            line.LoadContent(content);
+            var particleLight = content.Load<Texture2D>("particle_light");
+            _particleEngine = new ParticleEngine(particle, particleLight, _windowSizeDelegate, _scaleDelegate);
+            _line.LoadContent(content);
         }
 
         public void Start()
         {
-            isRunning = true;
-            particleEngine.SpawnsParticles = true;
-            line.Start();
-            dataHandler.Reset();
+            IsRunning = true;
+            _particleEngine.SpawnsParticles = true;
+            _line.Start();
+            _dataHandler.Reset();
         }
 
         public void Reset()
         {
-            isRunning = false;
-            particleEngine.SpawnsParticles = false;
-            dataHandler.Reset();
+            IsRunning = false;
+            _particleEngine.SpawnsParticles = false;
+            _dataHandler.Reset();
         }
 
         public void Update(GameTime gameTime)
         {
-            if (isRunning)
+            if (IsRunning)
             {
-                dataHandler.Update(gameTime);
-                if (dataHandler.Standing >= 1 || dataHandler.Standing <= 0)
+                _dataHandler.Update(gameTime);
+                if (_dataHandler.Standing >= 1 || _dataHandler.Standing <= 0)
                 {
-                    isRunning = false;
-                    particleEngine.SpawnsParticles = false;
-                    line.End();
-                    PlayerWon(this, new PlayerWonEventArgs(dataHandler.Standing >= 1));
+                    IsRunning = false;
+                    _particleEngine.SpawnsParticles = false;
+                    _line.End();
+                    PlayerWon?.Invoke(this, new PlayerWonEventArgs(_dataHandler.Standing >= 1));
                 }
             }
-            particleEngine.Update(dataHandler.Standing, dataHandler.GetDiff());
-            line.Update(gameTime, dataHandler.Standing);
+            _particleEngine.Update(_dataHandler.Standing, _dataHandler.GetDiff());
+            _line.Update(gameTime, _dataHandler.Standing);
 
-            Vector2 window = windowSizeDelegate();
-            left_source_rect = new Rectangle(0, 0, (int)Math.Min(left.Width, left.Height * window.X / window.Y), (int)Math.Min(left.Height, left.Width * window.Y / window.X));
-            scale_left = Math.Min(window.X / left_source_rect.Width, window.Y / left_source_rect.Height);
+            Vector2 window = _windowSizeDelegate();
+            _leftSourceRect = new Rectangle(0, 0, (int)Math.Min(_left.Width, _left.Height * window.X / window.Y), (int)Math.Min(_left.Height, _left.Width * window.Y / window.X));
+            _scaleLeft = Math.Min(window.X / _leftSourceRect.Width, window.Y / _leftSourceRect.Height);
 
-            right_source_rect = new Rectangle(0, 0, (int)Math.Min(right.Width, right.Height * window.X / window.Y), (int)Math.Min(right.Height, right.Width * window.Y / window.X));
-            scale_right = Math.Min(window.X / right_source_rect.Width, window.Y / right_source_rect.Height);
+            _rightSourceRect = new Rectangle(0, 0, (int)Math.Min(_right.Width, _right.Height * window.X / window.Y), (int)Math.Min(_right.Height, _right.Width * window.Y / window.X));
+            _scaleRight = Math.Min(window.X / _rightSourceRect.Width, window.Y / _rightSourceRect.Height);
 
-            pos_left = new Vector2(window.X * (dataHandler.Standing-1), 0) + dataHandler.LeftDisplacement;
-            pos_right = new Vector2(window.X * dataHandler.Standing, 0) + dataHandler.RightDisplacement;
+            _posLeft = new Vector2(window.X * (_dataHandler.Standing-1), 0) + _dataHandler.LeftDisplacement;
+            _posRight = new Vector2(window.X * _dataHandler.Standing, 0) + _dataHandler.RightDisplacement;
         }
 
         public void DrawNormal(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(left, pos_left, left_source_rect, Color.White, 0, Vector2.Zero, scale_left, SpriteEffects.None, 0);
-            spriteBatch.Draw(right, pos_right, right_source_rect, Color.White, 0, Vector2.Zero, scale_right, SpriteEffects.None, 0);
+            spriteBatch.Draw(_left, _posLeft, _leftSourceRect, Color.White, 0, Vector2.Zero, _scaleLeft, SpriteEffects.None, 0);
+            spriteBatch.Draw(_right, _posRight, _rightSourceRect, Color.White, 0, Vector2.Zero, _scaleRight, SpriteEffects.None, 0);
 
-            particleEngine.DrawNormal(spriteBatch);
-            line.DrawNormal(spriteBatch);
+            _particleEngine.DrawNormal(spriteBatch);
+            _line.DrawNormal(spriteBatch);
         }
 
         public void DrawLight(SpriteBatch spriteBatch)
         {
-            particleEngine.DrawLight(spriteBatch);
+            _particleEngine.DrawLight(spriteBatch);
             //line.DrawLight(spriteBatch);
         }
 
         public class PlayerWonEventArgs : EventArgs
         {
-            public bool leftWon;
-            public PlayerWonEventArgs(Boolean leftWon)
+            public bool LeftWon { get; private set; }
+            public PlayerWonEventArgs(bool leftWon)
             {
-                this.leftWon = leftWon;
+                LeftWon = leftWon;
             }
         }
 

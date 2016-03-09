@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
 
 namespace ArmWrestling.Components
 {
-    class Line
+    internal class Line
     {
-        const float ImageThickness = 26;
+        private const float _imageThickness = 26;
 
 
         public Vector2 Pos1;
@@ -19,27 +16,25 @@ namespace ArmWrestling.Components
         public Texture2D Light { get; private set; }
         public Texture2D Glow { get; private set; }
 
-        private GameMain.GetWindowSizeDelegate windowSizeDelegate;
-        private Random random;
-        private float randThickness;
-        private float thicknessScale;
-        private int thickness_update_time;
+        private readonly GameMain.GetWindowSizeDelegate _windowSizeDelegate;
+        private float _randThickness;
+        private float _thicknessScale;
+        private int _thicknessUpdateTime;
 
-        private bool starting;
-        private bool stopping;
-        private bool running;
-        private int elapsed_time;
+        private bool _starting;
+        private bool _stopping;
+        private bool _running;
+        private int _elapsedTime;
 
-        private float alpha = 0f;
+        private float _alpha;
 
         public Line(float thickness, GameMain.GetWindowSizeDelegate windowSizeDelegate)
         {
             Thickness = thickness;
-            randThickness = thickness;
-            this.windowSizeDelegate = windowSizeDelegate;
+            _randThickness = thickness;
+            this._windowSizeDelegate = windowSizeDelegate;
             Vector2 windowSize = windowSizeDelegate();
             Pos1 = new Vector2(windowSize.X / 2, 0);
-            random = new Random();
         }
 
         public void LoadContent(ContentManager cntMgr)
@@ -50,66 +45,66 @@ namespace ArmWrestling.Components
 
         public void Update(GameTime gameTime, float standing)
         {
-            Vector2 windowSize = windowSizeDelegate();
+            Vector2 windowSize = _windowSizeDelegate();
             Pos1.X = windowSize.X * standing;
             Height = windowSize.Y;
 
-            if (starting)
+            if (_starting)
             {
-                elapsed_time += gameTime.ElapsedGameTime.Milliseconds;
-                alpha += gameTime.ElapsedGameTime.Milliseconds / 750f;
-                if (elapsed_time >= 750)
+                _elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
+                _alpha += gameTime.ElapsedGameTime.Milliseconds / 750f;
+                if (_elapsedTime >= 750)
                 {
-                    starting = false;
+                    _starting = false;
                 }
-            } else if (stopping)
+            } else if (_stopping)
             {
-                elapsed_time += gameTime.ElapsedGameTime.Milliseconds;
-                alpha -= gameTime.ElapsedGameTime.Milliseconds / 300f;
+                _elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
+                _alpha -= gameTime.ElapsedGameTime.Milliseconds / 300f;
 
-                if (elapsed_time >= 300)
+                if (_elapsedTime >= 300)
                 {
-                    stopping = false;
+                    _stopping = false;
                 }
-            } else if (running)
+            } else if (_running)
             {
-                thickness_update_time += gameTime.ElapsedGameTime.Milliseconds;
-                randThickness = Thickness + (float) Math.Sin(thickness_update_time * Math.PI/1000) * Thickness / 8;
-                alpha = 0.95f + (float)Math.Sin(thickness_update_time * Math.PI / 1500 + 350) * 0.05f;
-                if (thickness_update_time >= 3000) thickness_update_time = 0;
+                _thicknessUpdateTime += gameTime.ElapsedGameTime.Milliseconds;
+                _randThickness = Thickness + (float) Math.Sin(_thicknessUpdateTime * Math.PI/1000) * Thickness / 8;
+                _alpha = 0.95f + (float)Math.Sin(_thicknessUpdateTime * Math.PI / 1500 + 350) * 0.05f;
+                if (_thicknessUpdateTime >= 3000) _thicknessUpdateTime = 0;
             }
 
-            thicknessScale = randThickness / ImageThickness;
+            _thicknessScale = _randThickness / _imageThickness;
         }
 
         public void DrawNormal(SpriteBatch spriteBatch)
         {
-            Vector2 middleOrigin = new Vector2(0, Glow.Height / 2f);
-            Vector2 middleScale = new Vector2(Height, thicknessScale);
+            var middleOrigin = new Vector2(0, Glow.Height / 2f);
+            var middleScale = new Vector2(Height, _thicknessScale);
 
-            spriteBatch.Draw(Glow , Pos1, null, Color.White * alpha, MathHelper.Pi / 2, middleOrigin, middleScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Glow , Pos1, null, Color.White * _alpha, MathHelper.Pi / 2, middleOrigin, middleScale, SpriteEffects.None, 0f);
         }
 
         public void DrawLight(SpriteBatch spriteBatch)
         {
-            Vector2 middleOrigin = new Vector2(0, Light.Height / 2f);
-            Vector2 middleScale = new Vector2(Height, thicknessScale);
+            var middleOrigin = new Vector2(0, Light.Height / 2f);
+            var middleScale = new Vector2(Height, _thicknessScale);
 
-            spriteBatch.Draw(Light, Pos1, null, Color.White * alpha, MathHelper.Pi / 2, middleOrigin, middleScale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Light, Pos1, null, Color.White * _alpha, MathHelper.Pi / 2, middleOrigin, middleScale, SpriteEffects.None, 0f);
         }
 
         public void Start()
         {
-            starting = true;
-            running = true;
-            elapsed_time = 0;
+            _starting = true;
+            _running = true;
+            _elapsedTime = 0;
         }
 
         public void End()
         {
-            stopping = true;
-            running = false;
-            elapsed_time = 0;
+            _stopping = true;
+            _running = false;
+            _elapsedTime = 0;
         }
 
     }

@@ -6,53 +6,50 @@ using System.Threading;
 
 namespace ArmWrestling
 {
-    public class Server
+    internal class Server
     {
         public static event DataHandler ReceivedData;
 
         public const int BufferSize = 1024;
 
-        private static Socket listener;
-        private static Socket handler;
+        private static Socket _listener;
+        private static Socket _handler;
 
         public static void Start()
         {
 
             var address = IPAddress.Parse("127.0.0.1");
-            IPEndPoint endpoint = new IPEndPoint(address, 30001);
+            var endpoint = new IPEndPoint(address, 30001);
 
-            listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            listener.Bind(endpoint);
+            _listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            _listener.Bind(endpoint);
 
-            new Thread(readStream).Start();
+            new Thread(ReadStream).Start();
         }
 
         public static void Send(string data)
         {
-            byte[] bytes = Encoding.Unicode.GetBytes(data);
-            if (handler != null && handler.Connected) handler.Send(bytes);
+            var bytes = Encoding.Unicode.GetBytes(data);
+            if (_handler != null && _handler.Connected) _handler.Send(bytes);
         }
 
-        private static void readStream()
+        private static void ReadStream()
         {
             try
             {
-                string data;
-                byte[] buffer = new byte[BufferSize];
-
-                listener.Listen(10);
+                _listener.Listen(10);
 
                 while (true)
                 {
-                    handler = listener.Accept();
+                    _handler = _listener.Accept();
                     while (true)
                     {
-                        buffer = new byte[BufferSize];
-                        int bytesRec = handler.Receive(buffer);
-                        data = Encoding.ASCII.GetString(buffer, 0, bytesRec);
-                        if (data.IndexOf("\n") > -1)
+                        var buffer = new byte[BufferSize];
+                        var bytesRec = _handler.Receive(buffer);
+                        var data = Encoding.ASCII.GetString(buffer, 0, bytesRec);
+                        if (data.IndexOf("\n", StringComparison.Ordinal) > -1)
                         {
-                            ReceivedData(data.Trim());
+                            ReceivedData?.Invoke(data.Trim());
                         }
                         Thread.Sleep(5);
                     }
