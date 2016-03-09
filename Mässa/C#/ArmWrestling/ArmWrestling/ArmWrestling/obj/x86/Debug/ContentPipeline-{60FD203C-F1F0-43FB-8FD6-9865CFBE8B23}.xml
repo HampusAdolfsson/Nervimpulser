@@ -29,15 +29,6 @@
       <Time>2016-02-28T18:45:16.274894+01:00</Time>
     </Item>
     <Item>
-      <Source>particle_light.png</Source>
-      <Name>particle_light</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\particle_light.xnb</Output>
-      <Time>2016-03-03T22:26:40.7752883+01:00</Time>
-    </Item>
-    <Item>
       <Source>lighting.fx</Source>
       <Name>lighting</Name>
       <Importer>EffectImporter</Importer>
@@ -90,6 +81,15 @@
       <Options>None</Options>
       <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\wrestling_sprite_red.xnb</Output>
       <Time>2016-03-04T22:45:01.2836367+01:00</Time>
+    </Item>
+    <Item>
+      <Source>particle_light.jpg</Source>
+      <Name>particle_light</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\particle_light.xnb</Output>
+      <Time>2016-03-09T20:35:40.1378379+01:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

@@ -13,20 +13,21 @@ namespace ArmWrestling.Components
         private Random random;
         private GameMain.GetWindowSizeDelegate windowSizeDelegate;
         private GameMain.GetScaleDelegate scaleDelegate;
-        private List<Texture2D> textures;
+        private Texture2D texture;
         private List<Particle> particles;
         private Texture2D lightMapTexture;
         private Color color;
 
         private int xEmitterPos;
+        private int lightCounter = 0;
 
         public bool SpawnsParticles { get; set; }
         
-        public ParticleEngine(List<Texture2D> textures, Texture2D lightMapTexture, GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate)
+        public ParticleEngine(Texture2D texture, Texture2D lightMapTexture, GameMain.GetWindowSizeDelegate windowSizeDelegate, GameMain.GetScaleDelegate scaleDelegate)
         {
             this.windowSizeDelegate = windowSizeDelegate;
             this.scaleDelegate = scaleDelegate;
-            this.textures = textures;
+            this.texture = texture;
             this.lightMapTexture = lightMapTexture;
             particles = new List<Particle>();
             random = new Random();
@@ -37,7 +38,6 @@ namespace ArmWrestling.Components
         {
             Vector2 scale = scaleDelegate();
 
-            var texture = textures[random.Next(textures.Count)];
             Vector2 position = new Vector2(xEmitterPos, random.Next((int) windowSize.Y));
             Vector2 velocity = new Vector2(
                     1.5f * (float)(random.NextDouble() * 2 - 1) - vel,
@@ -46,8 +46,8 @@ namespace ArmWrestling.Components
             float angle = (float) Math.Atan(velocity.Y/ velocity.X);
             float size = (float) random.NextDouble() * 0.2f * scale.X;
             var randColor = getColorFromStanding((float) (standing + 0.05*(random.NextDouble() - 0.5)));
-
-            return new Particle(texture, lightMapTexture, position, velocity, acceleration, angle, randColor, size);
+            if (++lightCounter == 10) lightCounter = 0;
+            return new Particle(texture, lightMapTexture, position, velocity, acceleration, angle, randColor, size, position.Y < windowSize.Y / 2);
         }
 
         public void Update(float standing, int diff)

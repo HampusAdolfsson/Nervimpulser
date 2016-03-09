@@ -18,10 +18,11 @@ namespace ArmWrestling.Components
         public Vector2 Acceleration { get; set; }
         public float Angle { get; set; }
         public Color Color { get; set; }
-        private Vector2 scale;
+        public bool DrawsLight { get; set; }
+        public Vector2 scale;
 
         public Particle(Texture2D texture, Texture2D light, Vector2 position, Vector2 velocity, Vector2 acceleration,
-            float angle, Color color, float size)
+            float angle, Color color, float size, bool hasLight)
         {
             Texture = texture;
             Light = light;
@@ -31,6 +32,7 @@ namespace ArmWrestling.Components
             Angle = angle;
             Color = color;
             scale = new Vector2(size * (velocity.Length() / vel_scale  + 1), size);
+            DrawsLight = hasLight;
         }
 
         public void Update()
@@ -52,11 +54,12 @@ namespace ArmWrestling.Components
 
         public void DrawLight(SpriteBatch spriteBatch)
         {
+            if (!DrawsLight) return;
             var sourceRectangle = new Rectangle(0, 0, Light.Width, Light.Height);
             Vector2 origin = new Vector2(Light.Width / 2, Light.Height / 2);
 
             spriteBatch.Draw(Light, Position, sourceRectangle, Color.White * 0.3f,
-                Angle, origin, 3, SpriteEffects.None, 0f);
+                Angle, origin, 12, SpriteEffects.None, 0f);
         }
     }
 

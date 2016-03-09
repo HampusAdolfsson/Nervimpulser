@@ -39,12 +39,10 @@ namespace ArmWrestling.Components.TopLevel
         {
             left = content.Load<Texture2D>("wrestling_sprite_blue");
             right = content.Load<Texture2D>("wrestling_sprite_red");
-
-            List<Texture2D> textures = new List<Texture2D>();
-            textures.Add(content.Load<Texture2D>("particle"));
-            var lightTexture = content.Load<Texture2D>("particle_light");
-            Texture2D particle_light = content.Load<Texture2D>("particle_light");
-            particleEngine = new ParticleEngine(textures, particle_light, windowSizeDelegate, scaleDelegate);
+            
+            var particle = content.Load<Texture2D>("particle");
+            var particle_light = content.Load<Texture2D>("particle_light");
+            particleEngine = new ParticleEngine(particle, particle_light, windowSizeDelegate, scaleDelegate);
             line.LoadContent(content);
         }
 
@@ -60,7 +58,6 @@ namespace ArmWrestling.Components.TopLevel
         {
             isRunning = false;
             particleEngine.SpawnsParticles = false;
-            line.End();
             dataHandler.Reset();
         }
 

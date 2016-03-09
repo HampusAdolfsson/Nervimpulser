@@ -59,13 +59,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="particle_light.png">
-      <Name>particle_light</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="announcements.spritefont">
       <Name>announcements</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -94,6 +87,13 @@
     </Compile>
     <Compile Include="wrestling_sprite_red.jpg">
       <Name>wrestling_sprite_red</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="particle_light.jpg">
+      <Name>particle_light</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
