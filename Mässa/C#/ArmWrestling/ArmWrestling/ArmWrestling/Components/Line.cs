@@ -58,7 +58,6 @@ namespace ArmWrestling.Components
             {
                 elapsed_time += gameTime.ElapsedGameTime.Milliseconds;
                 alpha += gameTime.ElapsedGameTime.Milliseconds / 750f;
-                Console.WriteLine(alpha);
                 if (elapsed_time >= 750)
                 {
                     starting = false;
@@ -67,7 +66,6 @@ namespace ArmWrestling.Components
             {
                 elapsed_time += gameTime.ElapsedGameTime.Milliseconds;
                 alpha -= gameTime.ElapsedGameTime.Milliseconds / 300f;
-                Console.WriteLine(alpha);
 
                 if (elapsed_time >= 300)
                 {

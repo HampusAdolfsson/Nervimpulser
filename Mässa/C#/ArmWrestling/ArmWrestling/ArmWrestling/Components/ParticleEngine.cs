@@ -19,7 +19,6 @@ namespace ArmWrestling.Components
         private Color color;
 
         private int xEmitterPos;
-        private int lightCounter = 0;
 
         public bool SpawnsParticles { get; set; }
         
@@ -46,7 +45,6 @@ namespace ArmWrestling.Components
             float angle = (float) Math.Atan(velocity.Y/ velocity.X);
             float size = (float) random.NextDouble() * 0.2f * scale.X;
             var randColor = getColorFromStanding((float) (standing + 0.05*(random.NextDouble() - 0.5)));
-            if (++lightCounter == 10) lightCounter = 0;
             return new Particle(texture, lightMapTexture, position, velocity, acceleration, angle, randColor, size, position.Y < windowSize.Y / 2);
         }
 
