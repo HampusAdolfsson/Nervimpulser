@@ -2,12 +2,12 @@
 <XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
   <Asset Type="Pipeline:BuildItemCollection">
     <Item>
-      <Source>CountDown.spritefont</Source>
-      <Name>CountDown</Name>
+      <Source>countdown.spritefont</Source>
+      <Name>countdown</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <Options>None</Options>
-      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\CountDown.xnb</Output>
+      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\countdown.xnb</Output>
       <Time>2016-03-04T21:30:38.4313348+01:00</Time>
     </Item>
     <Item>
@@ -20,24 +20,6 @@
       <Time>2016-02-28T18:45:16.2743933+01:00</Time>
     </Item>
     <Item>
-      <Source>particle.png</Source>
-      <Name>particle</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <Options>None</Options>
-      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\particle.xnb</Output>
-      <Time>2016-02-28T18:45:16.274894+01:00</Time>
-    </Item>
-    <Item>
-      <Source>lighting.fx</Source>
-      <Name>lighting</Name>
-      <Importer>EffectImporter</Importer>
-      <Processor>EffectProcessor</Processor>
-      <Options>None</Options>
-      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\lighting.xnb</Output>
-      <Time>2016-03-03T18:48:02.2118451+01:00</Time>
-    </Item>
-    <Item>
       <Source>announcements.spritefont</Source>
       <Name>announcements</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -45,6 +27,15 @@
       <Options>None</Options>
       <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\announcements.xnb</Output>
       <Time>2016-03-04T14:36:35.0627009+01:00</Time>
+    </Item>
+    <Item>
+      <Source>particle.png</Source>
+      <Name>particle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\particle.xnb</Output>
+      <Time>2016-02-28T18:45:16.274894+01:00</Time>
     </Item>
     <Item>
       <Source>burn_line.png</Source>
@@ -91,11 +82,20 @@
       <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\particle_light.xnb</Output>
       <Time>2016-03-09T20:35:40.1378379+01:00</Time>
     </Item>
+    <Item>
+      <Source>lighting.fx</Source>
+      <Name>lighting</Name>
+      <Importer>EffectImporter</Importer>
+      <Processor>EffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestling\bin\x86\Debug\Content\lighting.xnb</Output>
+      <Time>2016-03-15T16:07:42.7559704+01:00</Time>
+    </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>
       <ContentProjectGUID>{60FD203C-F1F0-43FB-8FD6-9865CFBE8B23}</ContentProjectGUID>
       <TargetPlatform>Windows</TargetPlatform>
-      <TargetProfile>Reach</TargetProfile>
+      <TargetProfile>HiDef</TargetProfile>
       <BuildConfiguration>Debug</BuildConfiguration>
       <CompressContent>false</CompressContent>
       <RootDirectory>D:\Programming\GymnasieArbete\Nervimpulser\Mässa\C#\ArmWrestling\ArmWrestling\ArmWrestlingContent\</RootDirectory>
