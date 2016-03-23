@@ -112,12 +112,12 @@ namespace ArmWrestling
                     _graphics.PreferredBackBufferWidth = 800;
                     _graphics.PreferredBackBufferHeight = 450;
                 }
+                _graphics.ToggleFullScreen();
+                _graphics.ApplyChanges();
+
                 var pp = GraphicsDevice.PresentationParameters;
                 _mainTarget = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
                 _lightMap = new RenderTarget2D(GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
-
-                _graphics.ToggleFullScreen();
-                _graphics.ApplyChanges();
             }
 
             _elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
