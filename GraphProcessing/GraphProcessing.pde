@@ -9,7 +9,6 @@ final static int PANEL_HEIGHT = 50;
 
 Serial port;
 PrintWriter output;
-FileOutputStream binOutput;
 
 int windowSize = 10;
 Filter filter = new MeanFilter(windowSize);
@@ -26,10 +25,6 @@ void setup() {
     File file = new File(sketchPath("output.csv"));
     if (!file.exists() && !file.createNewFile()) System.exit(1);
     output = new PrintWriter(file);
-    
-    File file2 = new File(sketchPath("WFDB/signal.dat"));
-    if (!file2.exists() && !file2.createNewFile()) System.exit(1);
-    binOutput = new FileOutputStream(file2, true);
   } 
   catch(IOException e) {
     e.printStackTrace();
@@ -51,7 +46,7 @@ void serialEvent(Serial port) {
     if (inString != null && !inString.equals("")) {
       inString = trim(inString);
       short inShort = Short.parseShort(inString);
-      loop45syntaxerror(inShort);
+      writeToFile(inShort);
       if (inShort < 1024) {
         short s = filter.getNext(inShort);
         values[offset] = (short) Math.round(map(s, 0, 1023, height - PANEL_HEIGHT, 0));
@@ -64,18 +59,9 @@ void serialEvent(Serial port) {
 
 // töm buffern innan programmet avslutas
 void dispose() {
-  try {
-    output.close();
-    binOutput.close();
-  } catch (IOException e) {}
+  output.close();
 }
 
-void loop45syntaxerror(short toWrite) {
+void writeToFile(short toWrite) {
   output.println(toWrite + ',');
-  byte[] bytes = new byte[2];
-  bytes[0] = (byte) (toWrite & 0xFF);
-  bytes[1] = (byte) (toWrite >> 8 & 0xFF);
-  try {
-    binOutput.write(bytes);
-  } catch(IOException e) {}
 }
