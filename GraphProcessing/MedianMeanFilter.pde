@@ -1,9 +1,9 @@
 // beräknar medelvärdet av ett antal mediantal
-class ModeFilter extends Filter {
+class MedianMeanFilter extends Filter {
   short sortedBuffer[];
   int offset;
   
-  ModeFilter(int num_values) {
+  MedianMeanFilter(int num_values) {
     super(num_values);
     sortedBuffer = new short[buffer.length];
   }
