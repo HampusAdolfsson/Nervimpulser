@@ -1,6 +1,7 @@
-import g4p_controls.*;
+ import g4p_controls.*;
 import java.io.FileOutputStream;
 import processing.serial.*;
+import org.apache.commons.math3.*;
 
 final static int SHUAICONSTANT = 9600; //baud rate
 final static int UPDATE_INTERVAL = 5; //intervall mellan mätningar i ms
@@ -16,7 +17,7 @@ int offset = 0;
 short values[];
 
 void setup() {
-  size(1000, 650, JAVA2D);
+  size(1366, 768, JAVA2D);
   createGUI();
   values = new short[width/PIXELS_PER_POINT];
   
@@ -49,8 +50,10 @@ void serialEvent(Serial port) {
       writeToFile(inShort);
       if (inShort < 1024) {
         short s = filter.getNext(inShort);
-        values[offset] = (short) Math.round(map(s, 0, 1023, height - PANEL_HEIGHT, 0));
-        //updateServo();    
+        s = (short) Math.round(map(s, 0, 1023, height - PANEL_HEIGHT, 0));
+        if (isCalibrating) doCalibration(s);
+        values[offset] = s;//s + threshold > height - PANEL_HEIGHT ? (short) (height - PANEL_HEIGHT) : (short) (threshold + s);
+        //updateServo();
         if (++offset == values.length) offset = 0;
       }
     }

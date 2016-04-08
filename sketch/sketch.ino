@@ -31,6 +31,5 @@ void loop()
     }
     delay(2);
   #else
-    delay(5);
   #endif
 }

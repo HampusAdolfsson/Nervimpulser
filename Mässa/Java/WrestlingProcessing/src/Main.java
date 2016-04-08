@@ -46,6 +46,9 @@ public class Main extends PApplet {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        double c = 1 * Math.pow(10, -6);
+        double x = 80600;
+        print(1/(2* Math.PI*x*c));
     }
 
 
