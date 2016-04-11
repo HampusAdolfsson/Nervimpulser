@@ -6,18 +6,21 @@ namespace ArmWrestling
 {
     internal class DataHandler
     {
+        private static DataHandler instance = new DataHandler();
+        public static DataHandler Instance { get { return instance; } }
+
         private readonly Random _random;
 
         public Vector2 LeftDisplacement { get; private set; }
         public Vector2 RightDisplacement { get; private set; }
         private int _elapsedMillis;
 
-        private int _lastLeft;
-        private int _lastRight;
+        public int _lastLeft;
+        public int _lastRight;
 
         public float Standing { get; private set; }
 
-        public DataHandler()
+        private DataHandler()
         {
             Standing = 0.5f;
             _random = new Random();
