@@ -140,7 +140,7 @@ namespace ArmWrestling
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.SetRenderTarget(_lightMap);
-            GraphicsDevice.Clear(Color.White * 0.3f);
+            GraphicsDevice.Clear(Color.White * 0.2f);
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
             _spriteBatch.DrawString(_fpsFont, "FPS:" + _fps, new Vector2(), Color.White);
             _gameScreen.DrawLight(_spriteBatch);
@@ -159,7 +159,7 @@ namespace ArmWrestling
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             _lightingEffect.Parameters["lightMap"].SetValue(_lightMap);
             _lightingEffect.CurrentTechnique.Passes[0].Apply();
-            _spriteBatch.Draw(_mainTarget, Vector2.Zero, Color.White);
+            _spriteBatch.Draw(_mainTarget, Vector2.Zero, Color.White); 
             _spriteBatch.End();
 
             _totalFrames++;

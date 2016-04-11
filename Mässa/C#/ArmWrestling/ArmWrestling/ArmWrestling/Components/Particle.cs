@@ -45,10 +45,10 @@ namespace ArmWrestling.Components
             _originLight = new Vector2(Light.Width / 2, Light.Height / 2);
         }
 
-        public void Update()
+        public void Update(GameTime gameTime)
         {
-            Velocity += Acceleration;
-            Position += Velocity;
+            Velocity += Acceleration * gameTime.ElapsedGameTime.Milliseconds / 16;
+            Position += Velocity * gameTime.ElapsedGameTime.Milliseconds / 16;
             Angle = (float) Math.Atan(Velocity.Y / Velocity.X);
             Scale.X = Velocity.Length() / _vel_scale;
         }

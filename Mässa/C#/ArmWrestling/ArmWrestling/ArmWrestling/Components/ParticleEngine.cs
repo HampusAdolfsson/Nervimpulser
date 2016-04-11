@@ -46,7 +46,7 @@ namespace ArmWrestling.Components
             return new Particle(_texture, _lightMapTexture, position, velocity, acceleration, angle, randColor, size, position.Y < windowSize.Y / 2);
         }
 
-        public void Update(float standing, int diff)
+        public void Update(GameTime gameTime, float standing, int diff)
         {
             var windowSize = _windowSizeDelegate();
             _xEmitterPos = (int) (windowSize.X * standing);
@@ -60,7 +60,7 @@ namespace ArmWrestling.Components
 
             for (int p = 0; p < _particles.Count; p++)
             {
-                _particles[p].Update();
+                _particles[p].Update(gameTime);
                 if (_particles[p].Position.Y > windowSize.Y)
                 {
                     _particles.RemoveAt(p);

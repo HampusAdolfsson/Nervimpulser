@@ -77,7 +77,7 @@ namespace ArmWrestling.Components.TopLevel
                 _points_left = "Points: " + (DataHandler.Instance._lastLeft*976).ToString("D6");
                 _points_right = "Points: " + (DataHandler.Instance._lastRight*976).ToString("D6");
             }
-            _particleEngine.Update(DataHandler.Instance.Standing, DataHandler.Instance.GetDiff());
+            _particleEngine.Update(gameTime, DataHandler.Instance.Standing, DataHandler.Instance.GetDiff());
             _line.Update(gameTime, DataHandler.Instance.Standing);
 
             Vector2 window = _windowSizeDelegate();
