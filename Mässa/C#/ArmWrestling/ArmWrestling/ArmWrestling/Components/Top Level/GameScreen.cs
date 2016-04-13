@@ -109,7 +109,7 @@ namespace ArmWrestling.Components.TopLevel
         public void DrawLight(SpriteBatch spriteBatch)
         {
             _particleEngine.DrawLight(spriteBatch);
-            //_line.DrawLight(spriteBatch);
+            _line.DrawLight(spriteBatch);
 
 
             spriteBatch.DrawString(_pointsFont, _points_left, _points_pos_left, Color.White);

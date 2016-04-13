@@ -43,7 +43,7 @@ namespace ArmWrestling.Components
             var angle = (float) Math.Atan(velocity.Y/ velocity.X);
             var size = (float) _random.NextDouble() * 0.2f * scale.X;
             var randColor = GetColorFromStanding((float) (standing + 0.05*(_random.NextDouble() - 0.5)));
-            return new Particle(_texture, _lightMapTexture, position, velocity, acceleration, angle, randColor, size, position.Y < windowSize.Y / 2);
+            return new Particle(_texture, _lightMapTexture, position, velocity, acceleration, angle, randColor, size, _random.Next(20) == 4);
         }
 
         public void Update(GameTime gameTime, float standing, int diff)

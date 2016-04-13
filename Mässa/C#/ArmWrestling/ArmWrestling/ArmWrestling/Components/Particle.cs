@@ -63,7 +63,7 @@ namespace ArmWrestling.Components
         {
             if (!DrawsLight) return;
 
-            spriteBatch.Draw(Light, Position, _sourceRectangleLight, Color.White * 0.3f,
+            spriteBatch.Draw(Light, Position, _sourceRectangleLight, Color.White * 0.7f,
                 Angle, _originLight, 12, SpriteEffects.None, 0f);
         }
     }

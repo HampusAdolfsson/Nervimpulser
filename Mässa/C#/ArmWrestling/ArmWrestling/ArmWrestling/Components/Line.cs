@@ -88,7 +88,7 @@ namespace ArmWrestling.Components
         public void DrawLight(SpriteBatch spriteBatch)
         {
             var middleOrigin = new Vector2(0, Light.Height / 2f);
-            var middleScale = new Vector2(Height, _thicknessScale);
+            var middleScale = new Vector2(Height, _thicknessScale * 2);
 
             spriteBatch.Draw(Light, Pos1, null, Color.White * _alpha, MathHelper.Pi / 2, middleOrigin, middleScale, SpriteEffects.None, 0f);
         }

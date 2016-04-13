@@ -6,7 +6,7 @@ namespace ArmWrestling
 {
     internal class DataHandler
     {
-        private static DataHandler instance = new DataHandler();
+        private static readonly DataHandler instance = new DataHandler();
         public static DataHandler Instance { get { return instance; } }
 
         private readonly Random _random;
@@ -53,11 +53,11 @@ namespace ArmWrestling
             Standing -= (float)Math.Pow((_lastRight - _lastLeft), 3) / 10000000000 * 6 * gameTime.ElapsedGameTime.Milliseconds / 1000f
                 + 0.5f * (_lastRight - _lastLeft) *500000 /10000000000 * 6 * gameTime.ElapsedGameTime.Milliseconds / 1000f;
 
-            if (_elapsedMillis > 80)
+            if (_elapsedMillis > 20)
             {
-                _elapsedMillis -= 80;
-                RightDisplacement = RandInsideUnitCircle() * _lastRight / 70f;
-                LeftDisplacement = RandInsideUnitCircle() * _lastLeft / 70f;
+                _elapsedMillis -= 20;
+                RightDisplacement = (RightDisplacement * 0.8f - RandInsideUnitCircle() * _lastRight) / 70f;
+                LeftDisplacement = (LeftDisplacement * 0.8f - RandInsideUnitCircle() * _lastLeft) / 70f;
             }
             Server.Send(Standing.ToString("R"));
 
