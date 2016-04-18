@@ -17,7 +17,7 @@ void setup()
   #if SERVO
     servo.attach(SERVO_PIN);
   #endif
-  Serial.begin(9600);
+  Serial.begin(128000);
 }
 
 void loop()

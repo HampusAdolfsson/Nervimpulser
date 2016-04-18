@@ -3,7 +3,7 @@ import java.io.FileOutputStream;
 import processing.serial.*;
 import org.apache.commons.math3.*;
 
-final static int SHUAICONSTANT = 9600; //baud rate
+final static int SHUAICONSTANT = 128000; //baud rate
 final static int UPDATE_INTERVAL = 5; //intervall mellan mätningar i ms
 final static int PIXELS_PER_POINT = 2;
 final static int PANEL_HEIGHT = 50;

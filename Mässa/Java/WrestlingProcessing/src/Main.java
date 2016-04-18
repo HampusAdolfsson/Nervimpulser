@@ -11,7 +11,7 @@ import java.nio.file.Files;
 
 public class Main extends PApplet {
 
-    final static int SHUAICONSTANT = 9600; //baud rate
+    final static int SHUAICONSTANT = 128000; //baud rate
     final static int UPDATE_INTERVAL = 5; //intervall mellan m\u00e4tningar i ms
     final static int PIXELS_PER_POINT = 2;
     final static int PANEL_HEIGHT = 50;
