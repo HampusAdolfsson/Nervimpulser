@@ -1,14 +1,14 @@
 java.util.Random random = new java.util.Random();
 void draw() {
-  background(0xFFFFFF);
+  background(0x0);
   // axlar
-  stroke(0, 0, 0);//stroke(0, 0x80, 0x1A);
+  stroke(0, 0x80, 0x1A);
   line(0, (height- PANEL_HEIGHT) * 2/3, width, (height- PANEL_HEIGHT) * 2/3);
   line(0, (height- PANEL_HEIGHT) * 1/3, width, (height- PANEL_HEIGHT) * 1/3);
   line(0, height - PANEL_HEIGHT, width, height - PANEL_HEIGHT);
   line(width - (PIXELS_PER_POINT*offset % (width/2)), 0, width - (PIXELS_PER_POINT*offset % (width/2)), height - PANEL_HEIGHT);
   line(width/2 - (PIXELS_PER_POINT*offset % (width/2)), 0, width/2 - (PIXELS_PER_POINT*offset % (width/2)), height - PANEL_HEIGHT);
-  stroke(0x28, 0x88, 0xA8);//stroke(0, 0xBB, 0xFF);
+  stroke(0, 0xBB, 0xFF);
   for (int i = 0; i < values.length; i++) {
     int y1 = values[(i + offset) % values.length];
     int x1 = PIXELS_PER_POINT * i;
