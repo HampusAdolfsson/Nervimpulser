@@ -35,8 +35,8 @@ void setup() {
   registerMethod("dispose", this);
   
   // initiera seriell kommunikation
-  port = new Serial(this, "COM3", SHUAICONSTANT);
-  port.bufferUntil('\n');
+  //port = new Serial(this, "COM3", SHUAICONSTANT);
+  //port.bufferUntil('\n');
 }
 
 

@@ -1,7 +1,7 @@
-abstract class Filter {
+public abstract class Filter {
   short[] buffer;
   
-  Filter(int num_values) {
+  public Filter(int num_values) {
     buffer = new short[num_values];
   }
   
@@ -10,9 +10,9 @@ abstract class Filter {
 }
 
 
-class EmptyFilter extends Filter {
+public class EmptyFilter extends Filter {
   
-  EmptyFilter(){
+  public EmptyFilter(){
     super(1);  
   }
   
@@ -23,8 +23,8 @@ class EmptyFilter extends Filter {
 }
 
 
-class LowPassFilter extends Filter {
-  LowPassFilter(int windowSize) {
+public class LowPassFilter extends Filter {
+  public LowPassFilter(int windowSize) {
     super(windowSize);  
   }
   short lastValue;
@@ -36,11 +36,11 @@ class LowPassFilter extends Filter {
 }
 
 
-class MeanFilter extends Filter {
+public class MeanFilter extends Filter {
   int sum = 0;
   int _offs = 0;
   
-  MeanFilter(int num_values) {
+  public MeanFilter(int num_values) {
     super(num_values);
   }
   
@@ -55,11 +55,11 @@ class MeanFilter extends Filter {
 }
 
 
-class MedianFilter extends Filter {
+public class MedianFilter extends Filter {
   short sortedBuffer[];
   int _offs;
   
-  MedianFilter(int num_values) {
+  public MedianFilter(int num_values) {
     super(num_values);  
     sortedBuffer = new short[num_values];
   }
@@ -94,11 +94,11 @@ class MedianFilter extends Filter {
 
 
 // beräknar medelvärdet av ett antal mediantal
-class MedianMeanFilter extends Filter {
+public class MedianMeanFilter extends Filter {
   short sortedBuffer[];
   int _offs;
   
-  MedianMeanFilter(int num_values) {
+  public MedianMeanFilter(int num_values) {
     super(num_values);
     sortedBuffer = new short[buffer.length];
   }
@@ -146,12 +146,12 @@ class MedianMeanFilter extends Filter {
 
 
 // https://en.wikipedia.org/wiki/Moving_average#Weighted_moving_average
-class WeightedMeanFilter extends Filter {
+public class WeightedMeanFilter extends Filter {
   int sum, numerator;
   int denominator;
   int _offs;
   
-  WeightedMeanFilter(int num_values) {
+  public WeightedMeanFilter(int num_values) {
     super(num_values);
     denominator = num_values * (num_values - 1) / 2; //n + (n - 1) + ... + 2 + 1
   }
@@ -168,8 +168,8 @@ class WeightedMeanFilter extends Filter {
 }
 
 
-class RMSFilter extends Filter {
-  RMSFilter(int num_values) {
+public class RMSFilter extends Filter {
+  public RMSFilter(int num_values) {
     super(width / PIXELS_PER_POINT);
   }
   

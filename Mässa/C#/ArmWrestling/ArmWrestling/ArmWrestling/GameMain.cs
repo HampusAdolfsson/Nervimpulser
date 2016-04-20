@@ -52,7 +52,8 @@ namespace ArmWrestling
                     FileName = "java.exe",
                     Arguments = "-jar WrestlingProcessing.jar",
                     CreateNoWindow = true,
-                    UseShellExecute = false
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true
                 }
             };
 

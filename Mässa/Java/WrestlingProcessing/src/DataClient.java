@@ -17,6 +17,7 @@ public class DataClient {
         out = new PrintWriter(socket.getOutputStream(), true);
         in = new BufferedReader(
                 new InputStreamReader(socket.getInputStream()));
+        System.out.println(socket.isConnected());
         new Thread(new ReadStreamAsyncTask()).start();
     }
 

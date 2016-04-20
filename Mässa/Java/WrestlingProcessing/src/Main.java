@@ -36,14 +36,14 @@ public class Main extends PApplet {
         values2 = new short[width / PIXELS_PER_POINT];
 
         try {
-            DataClient.start(standing);
             File file = new File("init_values.conf");
             String init = new String(Files.readAllBytes(file.toPath()));
             // initiera seriell kommunikation
             port = new Serial(this, init, SHUAICONSTANT);
             port.bufferUntil('\n');
-            //port.buffer(4);
-        } catch (IOException e) {
+            Thread.sleep(1000);
+            DataClient.start(standing);
+        } catch (IOException|InterruptedException e) {
             e.printStackTrace();
         }
         double c = 1 * Math.pow(10, -6);
@@ -176,8 +176,9 @@ public class Main extends PApplet {
         if (event != GEvent.CHANGED) return;
         try {
             windowSize = Integer.parseInt(source.getText());
-            filter1 = (Filter) filter1.getClass().getConstructors()[0].newInstance(this, windowSize);
-            filter2 = (Filter) filter2.getClass().getConstructors()[0].newInstance(this, windowSize);
+            println(filter1.getClass().getConstructors()[0].getParameterCount());
+            filter1 = (Filter) filter1.getClass().getConstructors()[0].newInstance(windowSize);
+            filter2 = (Filter) filter2.getClass().getConstructors()[0].newInstance(windowSize);
         } catch (Exception e) {
             if (e instanceof NumberFormatException) System.err.println("Invalid number");
             else e.printStackTrace();

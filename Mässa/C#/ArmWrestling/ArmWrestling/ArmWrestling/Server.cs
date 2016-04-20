@@ -37,10 +37,9 @@ namespace ArmWrestling
         {
             try
             {
-                _listener.Listen(10);
-
                 while (true)
                 {
+                    _listener.Listen(10);
                     _handler = _listener.Accept();
                     while (true)
                     {
@@ -55,7 +54,7 @@ namespace ArmWrestling
                     }
                 }
             }
-            catch (Exception e) { Console.WriteLine(e.ToString()); }
+            catch (Exception e) { Console.WriteLine(e); }
         }
 
         public delegate void DataHandler(string data);
