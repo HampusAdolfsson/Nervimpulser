@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class DataClient {
@@ -13,11 +14,11 @@ public class DataClient {
 
     public static void start(Float stnd) throws IOException {
         standing = stnd;
-        socket = new Socket("localhost", 30001);
+        socket = new Socket();
+        socket.connect(new InetSocketAddress("localhost", 30001), 100);
         out = new PrintWriter(socket.getOutputStream(), true);
         in = new BufferedReader(
                 new InputStreamReader(socket.getInputStream()));
-        System.out.println(socket.isConnected());
         new Thread(new ReadStreamAsyncTask()).start();
     }
 
