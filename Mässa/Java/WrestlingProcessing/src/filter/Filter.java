@@ -9,4 +9,8 @@ public abstract class Filter {
 
     // r\u00e4kna ut n\u00e4sta v\u00e4rde baserat p\u00e5 next och v\u00e4rdena i buffern
     public abstract short getNext(short next);
+
+    public static enum FilterType {
+        Empty, Mean, Median, Mode, WeigthedMean
+    }
 }
