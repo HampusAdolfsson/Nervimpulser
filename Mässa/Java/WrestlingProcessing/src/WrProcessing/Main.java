@@ -14,16 +14,16 @@ import java.nio.file.Files;
 
 public class Main extends PApplet {
 
-    final static int SHUAICONSTANT = 128000; //baud rate
-    final static int PIXELS_PER_POINT = 2;
-    final static int PANEL_HEIGHT = 50;
+    private final static int SHUAICONSTANT = 128000; //baud rate
+    private final static int PIXELS_PER_POINT = 2;
+    private final static int PANEL_HEIGHT = 50;
 
-    Serial port;
+    private Serial port;
 
-    int lastOffset = 0;
-    Float standing = 0.5f;
+    private int lastOffset = 0;
+    private Float standing = 0.5f;
 
-    SignalCollection signals;
+    private SignalCollection signals;
 
     public void setup() {
         surface.setResizable(true);
@@ -40,7 +40,7 @@ public class Main extends PApplet {
             Thread.sleep(1000);
             DataClient.start(standing);
         } catch (IOException|InterruptedException e) {
-            e.printStackTrace();
+            print(e.getMessage());
         }
     }
 
@@ -67,7 +67,7 @@ public class Main extends PApplet {
         }///System.err.println(e.getMessage());}
     }
 
-    public void clearAndDrawAxes() {
+    private void clearAndDrawAxes() {
         background(0);
         // axlar
         stroke(0, 0x80, 0x1A);
@@ -78,7 +78,7 @@ public class Main extends PApplet {
         line(width * 2 / 3, 0, width * 2 / 3, height - PANEL_HEIGHT);
     }
 
-    int lastWidth;
+    private int lastWidth;
     public void draw() {
         if (width != lastWidth) {
             clearAndDrawAxes();
@@ -95,12 +95,14 @@ public class Main extends PApplet {
         while (lastOffset < signals.offset) {
             if (lastOffset > 0){
                 stroke(0, 0xBB, 0xFF);
-                line(PIXELS_PER_POINT * (lastOffset - 1), Math.round(map(signals.getValues(0)[lastOffset - 1], 0, 1023, height - PANEL_HEIGHT, 0)),
-                        PIXELS_PER_POINT * (lastOffset), Math.round(map(signals.getValues(0)[lastOffset], 0, 1023, height - PANEL_HEIGHT, 0)));
+                int vertOffs = signals.getVerticalOffset(0);
+                line(PIXELS_PER_POINT * (lastOffset - 1), Math.round(map(signals.getValues(0)[lastOffset - 1], 0, 1023, height - PANEL_HEIGHT, 0) + vertOffs),
+                        PIXELS_PER_POINT * (lastOffset), Math.round(map(signals.getValues(0)[lastOffset], 0, 1023, height - PANEL_HEIGHT, 0)) + vertOffs);
 
+                vertOffs = signals.getVerticalOffset(1);
                 stroke(0xFC, 0x00, 0x82);
-                line(PIXELS_PER_POINT * (lastOffset - 1), Math.round(map(signals.getValues(1)[lastOffset - 1], 0, 1023, height - PANEL_HEIGHT, 0)),
-                        PIXELS_PER_POINT * (lastOffset), Math.round(map(signals.getValues(1)[lastOffset], 0, 1023, height - PANEL_HEIGHT, 0)));
+                line(PIXELS_PER_POINT * (lastOffset - 1), Math.round(map(signals.getValues(1)[lastOffset - 1], 0, 1023, height - PANEL_HEIGHT, 0) + vertOffs),
+                        PIXELS_PER_POINT * (lastOffset), Math.round(map(signals.getValues(1)[lastOffset], 0, 1023, height - PANEL_HEIGHT, 0)) + vertOffs);
             }
             //println(lastOffset + " " + offset);
             //line(lastOffset, values1[lastOffset], lastOffset, 0);

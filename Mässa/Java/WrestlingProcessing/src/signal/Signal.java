@@ -8,26 +8,26 @@ public class Signal {
 
     private short values[];
     private Filter filter;
-    private short verticalOffset;
+    short verticalOffset;
 
-    protected Signal(int bufferSize) {
+    Signal(int bufferSize) {
         filter = new MeanFilter(DEFAULT_WINDOW_SIZE);
         values = new short[bufferSize];
     }
 
-    protected void addValue(short value, int offset) {
-        values[offset] = (short) (filter.getNext(value) - verticalOffset);
+    void addValue(short value, int offset) {
+        values[offset] = filter.getNext(value);
     }
 
-    protected void reset() {
+    void reset() {
         reset(values.length);
     }
 
-    protected void reset(int bufferSize) {
+    void reset(int bufferSize) {
         values = new short[bufferSize];
     }
 
-    protected void setFilter(FilterType filterType, int size) throws ReflectiveOperationException {
+    void setFilter(FilterType filterType, int size) throws ReflectiveOperationException {
         switch (filterType) {
             case Mean:
                 filter = new MeanFilter(size);
@@ -47,11 +47,11 @@ public class Signal {
         }
     }
 
-    protected void incrementVertOffs(short offset) {
+    void incrementVertOffs(short offset) {
         verticalOffset += offset;
     }
 
-    public short[] getValues() {
+    short[] getValues() {
         return values;
     }
 }

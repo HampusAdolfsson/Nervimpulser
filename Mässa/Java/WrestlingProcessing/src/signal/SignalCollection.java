@@ -6,9 +6,9 @@ import filter.Filter;
 public class SignalCollection {
     private Signal[] signals;
     public int offset;
-    int bufferSize;
-    int filterSize = Signal.DEFAULT_WINDOW_SIZE;
-    Filter.FilterType filterType = Filter.FilterType.Mean;
+    private int bufferSize;
+    private int filterSize = Signal.DEFAULT_WINDOW_SIZE;
+    private Filter.FilterType filterType = Filter.FilterType.Mean;
 
     public SignalCollection(int collectionSize, int bufferSize) {
         signals = new Signal[collectionSize];
@@ -63,6 +63,10 @@ public class SignalCollection {
     public void incrementVerticalOffset(int index, short amount) {
         if (index >= signals.length) return;
         signals[index].incrementVertOffs(amount);
+    }
+
+    public short getVerticalOffset(int index) {
+        return signals[index].verticalOffset;
     }
 }
 
